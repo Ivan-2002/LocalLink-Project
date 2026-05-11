@@ -1,0 +1,295 @@
+/* ============================================================
+   TownMarket — Global Stylesheet
+   public/assets/css/style.css
+   ============================================================ */
+
+/* ── Reset & Base ─────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ── CSS Variables (change colours here, updates everywhere) ─ */
+:root {
+  --gold-light:    #f5c97a;
+  --gold-mid:      #e8a94a;
+  --gold-dark:     #c47e1a;
+  --cream:         #fdf3e3;
+  --btn-dark:      #1a1a2e;
+  --text-main:     #2b2017;
+  --text-muted:    #8a7560;
+  --accent:        #d4870a;
+  --card-bg:       rgba(255, 255, 255, 0.72);
+  --card-radius:   24px;
+  --input-radius:  50px;
+}
+
+/* ── Typography ───────────────────────────────────────────── */
+body {
+  font-family: 'DM Sans', sans-serif;
+  color: var(--text-main);
+}
+
+/* ── Auth Pages (login / register) ───────────────────────── */
+.auth-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: url('../images/login_background.avif') center center / cover no-repeat fixed;
+}
+
+/* Card */
+.auth-card {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  max-width: 420px;
+  background: var(--card-bg);
+  backdrop-filter: blur(18px) saturate(1.4);
+  -webkit-backdrop-filter: blur(18px) saturate(1.4);
+  border-radius: var(--card-radius);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow: 0 24px 64px rgba(120, 70, 0, 0.18),
+              0 2px 0 rgba(255, 255, 255, 0.5) inset;
+  padding: 44px 40px 36px;
+  animation: cardIn .55s cubic-bezier(.22, 1, .36, 1) both;
+}
+
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(28px) scale(.97); }
+  to   { opacity: 1; transform: translateY(0)    scale(1);   }
+}
+
+/* Brand icon */
+.brand-icon {
+  font-size: 2.6rem;
+  display: block;
+  text-align: center;
+  margin-bottom: 10px;
+  animation: iconPop .6s .15s cubic-bezier(.34, 1.56, .64, 1) both;
+}
+
+@keyframes iconPop {
+  from { opacity: 0; transform: scale(.5); }
+  to   { opacity: 1; transform: scale(1);  }
+}
+
+/* Headings */
+.auth-heading {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.85rem;
+  color: var(--text-main);
+  text-align: center;
+  margin-bottom: 4px;
+}
+
+.auth-sub {
+  text-align: center;
+  font-size: .9rem;
+  color: var(--text-muted);
+  margin-bottom: 28px;
+}
+
+.auth-sub a {
+  color: var(--accent);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.auth-sub a:hover { text-decoration: underline; }
+
+/* ── Tab Toggle ───────────────────────────────────────────── */
+.tab-row {
+  display: flex;
+  background: rgba(0, 0, 0, 0.06);
+  border-radius: 50px;
+  padding: 4px;
+  margin-bottom: 28px;
+}
+
+.tab-btn {
+  flex: 1;
+  border: none;
+  background: transparent;
+  border-radius: 50px;
+  padding: 8px 0;
+  font-family: 'DM Sans', sans-serif;
+  font-size: .9rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all .25s;
+}
+
+.tab-btn.active {
+  background: #fff;
+  color: var(--text-main);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.10);
+}
+
+/* ── Alert ────────────────────────────────────────────────── */
+.auth-alert {
+  border-radius: 12px;
+  font-size: .875rem;
+  margin-bottom: 16px;
+}
+
+/* ── Inputs ───────────────────────────────────────────────── */
+.input-wrap {
+  position: relative;
+  margin-bottom: 14px;
+}
+
+.input-icon {
+  position: absolute;
+  left: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+  font-size: 1rem;
+  pointer-events: none;
+}
+
+.form-control,
+.form-select {
+  border-radius: var(--input-radius) !important;
+  border: 1.5px solid rgba(0, 0, 0, 0.13) !important;
+  background: rgba(255, 255, 255, 0.85) !important;
+  padding: 13px 18px 13px 44px !important;
+  font-family: 'DM Sans', sans-serif;
+  font-size: .925rem;
+  color: var(--text-main);
+  transition: border-color .2s, box-shadow .2s;
+}
+
+.form-control::placeholder { color: #b5a48a; }
+
+.form-control:focus,
+.form-select:focus {
+  border-color: var(--gold-dark) !important;
+  box-shadow: 0 0 0 3px rgba(196, 126, 26, 0.15) !important;
+  outline: none;
+}
+
+/* ── Remember / Forgot row ────────────────────────────────── */
+.extras-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  font-size: .85rem;
+}
+
+.extras-row label {
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+}
+
+.extras-row a {
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.extras-row a:hover { text-decoration: underline; }
+
+input[type="checkbox"] {
+  accent-color: var(--accent);
+  width: 16px;
+  height: 16px;
+}
+
+/* ── Buttons ──────────────────────────────────────────────── */
+.btn-primary-dark {
+  width: 100%;
+  padding: 14px;
+  background: var(--btn-dark);
+  color: #fff;
+  border: none;
+  border-radius: var(--input-radius);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: .3px;
+  cursor: pointer;
+  transition: background .2s, transform .15s, box-shadow .2s;
+  box-shadow: 0 4px 18px rgba(26, 26, 46, 0.25);
+}
+
+.btn-primary-dark:hover {
+  background: #2d2d4a;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 22px rgba(26, 26, 46, 0.30);
+}
+
+.btn-primary-dark:active  { transform: translateY(0); }
+.btn-primary-dark:disabled { opacity: .65; cursor: not-allowed; transform: none; }
+
+/* ── Divider ──────────────────────────────────────────────── */
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 22px 0;
+  color: var(--text-muted);
+  font-size: .82rem;
+}
+
+.divider::before,
+.divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: rgba(0, 0, 0, 0.12);
+}
+
+/* ── Social Buttons ───────────────────────────────────────── */
+.social-row {
+  display: flex;
+  justify-content: center;
+  gap: 18px;
+}
+
+.social-btn {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(0, 0, 0, 0.12);
+  background: rgba(255, 255, 255, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform .18s, box-shadow .18s;
+  text-decoration: none;
+}
+
+.social-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.13);
+}
+
+.social-btn svg { width: 22px; height: 22px; }
+
+/* ── Form animation ───────────────────────────────────────── */
+.auth-form {
+  animation: fadeUp .35s ease both;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Navbar (shared across main site) ────────────────────── */
+.navbar-brand { font-weight: 800; font-size: 1.3rem; }
+
+/* ── Utility ──────────────────────────────────────────────── */
+.text-accent  { color: var(--accent); }
+.text-muted-c { color: var(--text-muted); }
