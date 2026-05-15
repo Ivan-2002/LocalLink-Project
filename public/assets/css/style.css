@@ -1,10 +1,12 @@
 /* ============================================================
-   TownMarket — Global Stylesheet
-   public/assets/css/style.css
+   LocalLink — Global Stylesheet
+   All shared styles, CSS variables, and auth page
    ============================================================ */
 
 /* ── Reset & Base ─────────────────────────────────────────── */
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -12,22 +14,22 @@
 
 /* ── CSS Variables (change colours here, updates everywhere) ─ */
 :root {
-  --gold-light:    #f5c97a;
-  --gold-mid:      #e8a94a;
-  --gold-dark:     #c47e1a;
-  --cream:         #fdf3e3;
-  --btn-dark:      #1a1a2e;
-  --text-main:     #2b2017;
-  --text-muted:    #8a7560;
-  --accent:        #d4870a;
-  --card-bg:       rgba(255, 255, 255, 0.72);
-  --card-radius:   24px;
-  --input-radius:  50px;
+  --gold-light: #f5c97a;
+  --gold-mid: #e8a94a;
+  --gold-dark: #c47e1a;
+  --cream: #fdf3e3;
+  --btn-dark: #1a1a2e;
+  --text-main: #2b2017;
+  --text-muted: #8a7560;
+  --accent: #d4870a;
+  --card-bg: rgba(255, 255, 255, 0.72);
+  --card-radius: 24px;
+  --input-radius: 50px;
 }
 
 /* ── Typography ───────────────────────────────────────────── */
 body {
-  font-family: 'DM Sans', sans-serif;
+  font-family: "DM Sans", sans-serif;
   color: var(--text-main);
 }
 
@@ -38,7 +40,8 @@ body {
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  background: url('../images/login_background.avif') center center / cover no-repeat fixed;
+  background: url("../images/login_background.avif") center center / cover
+    no-repeat fixed;
 }
 
 /* Card */
@@ -52,15 +55,22 @@ body {
   -webkit-backdrop-filter: blur(18px) saturate(1.4);
   border-radius: var(--card-radius);
   border: 1px solid rgba(255, 255, 255, 0.6);
-  box-shadow: 0 24px 64px rgba(120, 70, 0, 0.18),
-              0 2px 0 rgba(255, 255, 255, 0.5) inset;
+  box-shadow:
+    0 24px 64px rgba(120, 70, 0, 0.18),
+    0 2px 0 rgba(255, 255, 255, 0.5) inset;
   padding: 44px 40px 36px;
-  animation: cardIn .55s cubic-bezier(.22, 1, .36, 1) both;
+  animation: cardIn 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 @keyframes cardIn {
-  from { opacity: 0; transform: translateY(28px) scale(.97); }
-  to   { opacity: 1; transform: translateY(0)    scale(1);   }
+  from {
+    opacity: 0;
+    transform: translateY(28px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
 /* Brand icon */
@@ -69,17 +79,23 @@ body {
   display: block;
   text-align: center;
   margin-bottom: 10px;
-  animation: iconPop .6s .15s cubic-bezier(.34, 1.56, .64, 1) both;
+  animation: iconPop 0.6s 0.15s cubic-bezier(0.34, 1.56, 0.64, 1) both;
 }
 
 @keyframes iconPop {
-  from { opacity: 0; transform: scale(.5); }
-  to   { opacity: 1; transform: scale(1);  }
+  from {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 /* Headings */
 .auth-heading {
-  font-family: 'DM Serif Display', serif;
+  font-family: "DM Serif Display", serif;
   font-size: 1.85rem;
   color: var(--text-main);
   text-align: center;
@@ -88,7 +104,7 @@ body {
 
 .auth-sub {
   text-align: center;
-  font-size: .9rem;
+  font-size: 0.9rem;
   color: var(--text-muted);
   margin-bottom: 28px;
 }
@@ -99,7 +115,9 @@ body {
   text-decoration: none;
 }
 
-.auth-sub a:hover { text-decoration: underline; }
+.auth-sub a:hover {
+  text-decoration: underline;
+}
 
 /* ── Tab Toggle ───────────────────────────────────────────── */
 .tab-row {
@@ -116,24 +134,24 @@ body {
   background: transparent;
   border-radius: 50px;
   padding: 8px 0;
-  font-family: 'DM Sans', sans-serif;
-  font-size: .9rem;
+  font-family: "DM Sans", sans-serif;
+  font-size: 0.9rem;
   font-weight: 500;
   color: var(--text-muted);
   cursor: pointer;
-  transition: all .25s;
+  transition: all 0.25s;
 }
 
 .tab-btn.active {
   background: #fff;
   color: var(--text-main);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.10);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 /* ── Alert ────────────────────────────────────────────────── */
 .auth-alert {
   border-radius: 12px;
-  font-size: .875rem;
+  font-size: 0.875rem;
   margin-bottom: 16px;
 }
 
@@ -159,13 +177,17 @@ body {
   border: 1.5px solid rgba(0, 0, 0, 0.13) !important;
   background: rgba(255, 255, 255, 0.85) !important;
   padding: 13px 18px 13px 44px !important;
-  font-family: 'DM Sans', sans-serif;
-  font-size: .925rem;
+  font-family: "DM Sans", sans-serif;
+  font-size: 0.925rem;
   color: var(--text-main);
-  transition: border-color .2s, box-shadow .2s;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
 }
 
-.form-control::placeholder { color: #b5a48a; }
+.form-control::placeholder {
+  color: #b5a48a;
+}
 
 .form-control:focus,
 .form-select:focus {
@@ -180,7 +202,7 @@ body {
   align-items: center;
   justify-content: space-between;
   margin-bottom: 20px;
-  font-size: .85rem;
+  font-size: 0.85rem;
 }
 
 .extras-row label {
@@ -197,7 +219,9 @@ body {
   font-weight: 500;
 }
 
-.extras-row a:hover { text-decoration: underline; }
+.extras-row a:hover {
+  text-decoration: underline;
+}
 
 input[type="checkbox"] {
   accent-color: var(--accent);
@@ -213,23 +237,32 @@ input[type="checkbox"] {
   color: #fff;
   border: none;
   border-radius: var(--input-radius);
-  font-family: 'DM Sans', sans-serif;
+  font-family: "DM Sans", sans-serif;
   font-size: 1rem;
   font-weight: 600;
-  letter-spacing: .3px;
+  letter-spacing: 0.3px;
   cursor: pointer;
-  transition: background .2s, transform .15s, box-shadow .2s;
+  transition:
+    background 0.2s,
+    transform 0.15s,
+    box-shadow 0.2s;
   box-shadow: 0 4px 18px rgba(26, 26, 46, 0.25);
 }
 
 .btn-primary-dark:hover {
   background: #2d2d4a;
   transform: translateY(-1px);
-  box-shadow: 0 6px 22px rgba(26, 26, 46, 0.30);
+  box-shadow: 0 6px 22px rgba(26, 26, 46, 0.3);
 }
 
-.btn-primary-dark:active  { transform: translateY(0); }
-.btn-primary-dark:disabled { opacity: .65; cursor: not-allowed; transform: none; }
+.btn-primary-dark:active {
+  transform: translateY(0);
+}
+.btn-primary-dark:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+  transform: none;
+}
 
 /* ── Divider ──────────────────────────────────────────────── */
 .divider {
@@ -238,12 +271,12 @@ input[type="checkbox"] {
   gap: 12px;
   margin: 22px 0;
   color: var(--text-muted);
-  font-size: .82rem;
+  font-size: 0.82rem;
 }
 
 .divider::before,
 .divider::after {
-  content: '';
+  content: "";
   flex: 1;
   height: 1px;
   background: rgba(0, 0, 0, 0.12);
@@ -266,7 +299,9 @@ input[type="checkbox"] {
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: transform .18s, box-shadow .18s;
+  transition:
+    transform 0.18s,
+    box-shadow 0.18s;
   text-decoration: none;
 }
 
@@ -275,21 +310,37 @@ input[type="checkbox"] {
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.13);
 }
 
-.social-btn svg { width: 22px; height: 22px; }
+.social-btn svg {
+  width: 22px;
+  height: 22px;
+}
 
 /* ── Form animation ───────────────────────────────────────── */
 .auth-form {
-  animation: fadeUp .35s ease both;
+  animation: fadeUp 0.35s ease both;
 }
 
 @keyframes fadeUp {
-  from { opacity: 0; transform: translateY(10px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* ── Navbar (shared across main site) ────────────────────── */
-.navbar-brand { font-weight: 800; font-size: 1.3rem; }
+.navbar-brand {
+  font-weight: 800;
+  font-size: 1.3rem;
+}
 
 /* ── Utility ──────────────────────────────────────────────── */
-.text-accent  { color: var(--accent); }
-.text-muted-c { color: var(--text-muted); }
+.text-accent {
+  color: var(--accent);
+}
+.text-muted-c {
+  color: var(--text-muted);
+}
