@@ -73,6 +73,13 @@ $(function () {
     // Show page, hide loader
     $("#pageLoader").addClass("d-none");
     $("#productDetail").removeClass("d-none");
+
+    // Show Edit / Delete buttons only to owner or admin
+    if (IS_LOGGED && (USER_ID === p.seller_id || USER_ROLE === "admin")) {
+      $(".pd-actions").append(
+        `<a href="${BASE_URL}seller/edit-product.php?id=${p.id}"class="btn-edit-listing">✏️ Edit Listing</a>`,
+      );
+    }
   }
 
   // ── Thumbnails ─────────────────────────────────────────────

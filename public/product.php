@@ -182,7 +182,8 @@ if (!$productId) redirect(BASE_URL . 'index.php');
         const PRODUCT_ID = <?= $productId ?>;
         const BASE_URL = '<?= BASE_URL ?>';
         const IS_LOGGED = <?= isLoggedIn() ? 'true' : 'false' ?>;
-        const USER_ROLE = '<?= getRole() ?>';
+        // const USER_ROLE = '<?= getRole() ?>';
+        const USER_ID = <?= $_SESSION['user_id'] ?? 0 ?>;
     </script>
     <script src="<?= BASE_URL ?>assets/js/product.js"></script>
 </body>

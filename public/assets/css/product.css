@@ -446,3 +446,26 @@
     align-items: center;
   }
 }
+
+.btn-edit-listing {
+  padding: 11px 18px;
+  background: #fff;
+  color: #2b2017;
+  border: 1.5px solid #d0c4b8;
+  border-radius: 10px;
+  font-family: "DM Sans", sans-serif;
+  font-size: 0.88rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition:
+    background 0.18s,
+    border-color 0.18s;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+.btn-edit-listing:hover {
+  background: #f5ede0;
+  border-color: #c47e1a;
+  color: #c47e1a;
+}
