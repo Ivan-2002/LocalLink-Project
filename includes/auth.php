@@ -15,16 +15,6 @@ function getRole(): string
     return $_SESSION['role'] ?? '';
 }
 
-function isBuyer(): bool
-{
-    return getRole() === 'buyer';
-}
-
-function isSeller(): bool
-{
-    return getRole() === 'seller';
-}
-
 function isAdmin(): bool
 {
     return getRole() === 'admin';
@@ -38,22 +28,6 @@ function requireLogin(): void
 {
     if (!isLoggedIn()) {
         redirect(BASE_URL . 'login.php');
-    }
-}
-
-function requireSeller(): void
-{
-    requireLogin();
-    if (!isSeller()) {
-        redirect(BASE_URL . 'index.php');
-    }
-}
-
-function requireBuyer(): void
-{
-    requireLogin();
-    if (!isBuyer()) {
-        redirect(BASE_URL . 'index.php');
     }
 }
 

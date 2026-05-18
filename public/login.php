@@ -3,11 +3,11 @@
 require_once __DIR__ . '/../config/config.php';
 require_once __DIR__ . '/../includes/auth.php';
 
-if (isLoggedIn()) {
-  if (isAdmin())  redirect(BASE_URL . '../admin/dashboard.php');
-  if (isSeller()) redirect(BASE_URL . 'seller/dashboard.php');
-  redirect(BASE_URL . 'index.php');
-}
+// if (isLoggedIn()) {
+//   if (isAdmin())  redirect(BASE_URL . '../admin/dashboard.php');
+//   if (isSeller()) redirect(BASE_URL . 'seller/dashboard.php');
+//   redirect(BASE_URL . 'index.php');
+// }
 
 ?>
 <!DOCTYPE html>
@@ -16,7 +16,7 @@ if (isLoggedIn()) {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>TownMarket — Login</title>
+  <title>LocalLink — Login</title>
 
   <!-- 1. Preconnect (speed) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -104,14 +104,6 @@ if (isLoggedIn()) {
       <div class="input-wrap">
         <span class="input-icon">🔒</span>
         <input type="password" name="password" class="form-control" placeholder="password (min. 6 chars)" required minlength="6">
-      </div>
-      <div class="input-wrap">
-        <span class="input-icon">🏷️</span>
-        <select name="role" class="form-select" required>
-          <option value="">I want to...</option>
-          <option value="buyer">Buy products</option>
-          <option value="seller">Sell products</option>
-        </select>
       </div>
       <div class="input-wrap">
         <span class="input-icon">📍</span>

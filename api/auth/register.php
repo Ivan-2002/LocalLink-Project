@@ -17,11 +17,13 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 $name     = sanitize($_POST['name']     ?? '');
 $email    = trim($_POST['email']        ?? '');
 $password = $_POST['password']          ?? '';
-$role     = $_POST['role']              ?? '';
 $location = sanitize($_POST['location'] ?? '');
 
+// Force the assigned role to be 'user'
+$assignedRole = 'user';
+
 // Validate
-if (!$name || !$email || !$password || !$role) {
+if (!$name || !$email || !$password) {
     jsonResponse(['error' => 'All required fields must be filled.'], 422);
 }
 
@@ -33,9 +35,9 @@ if (strlen($password) < 6) {
     jsonResponse(['error' => 'Password must be at least 6 characters.'], 422);
 }
 
-if (!in_array($role, ['buyer', 'seller'])) {
-    jsonResponse(['error' => 'Invalid role selected.'], 422);
-}
+// if (!in_array($role, ['buyer', 'seller'])) {
+//     jsonResponse(['error' => 'Invalid role selected.'], 422);
+// }
 
 // Check email already taken
 $stmt = $pdo->prepare("SELECT id FROM users WHERE email = ? LIMIT 1");
@@ -44,12 +46,12 @@ if ($stmt->fetch()) {
     jsonResponse(['error' => 'An account with this email already exists.'], 409);
 }
 
-// Insert user
+// Insert user (Database handles 'role' DEFAULT 'user' automatically)
 $hash = password_hash($password, PASSWORD_BCRYPT);
 $stmt = $pdo->prepare(
-    "INSERT INTO users (name, email, password, role, location) VALUES (?, ?, ?, ?, ?)"
+    "INSERT INTO users (name, email, password, location) VALUES (?, ?, ?, ?)"
 );
-$stmt->execute([$name, $email, $hash, $role, $location ?: null]);
+$stmt->execute([$name, $email, $hash, $location ?: null]);
 $userId = $pdo->lastInsertId();
 
 // Auto-login after register
@@ -57,15 +59,15 @@ if (session_status() === PHP_SESSION_NONE) session_start();
 $_SESSION['user_id'] = $userId;
 $_SESSION['name']    = $name;
 $_SESSION['email']   = $email;
-$_SESSION['role']    = $role;
+$_SESSION['role']    = $assignedRole; // Good idea to keep this in session for middleware checks later!
 
 $redirectMap = [
-    'seller' => BASE_URL . 'seller/dashboard.php',
-    'buyer'  => BASE_URL . 'index.php',
+    'user'  => BASE_URL . 'index.php',
+    'admin' => BASE_URL . 'admin/dashboard.php' // Kept for future reference
 ];
 
 jsonResponse([
     'success'  => true,
-    'role'     => $role,
-    'redirect' => $redirectMap[$role],
+    'role'     => $assignedRole,
+    'redirect' => $redirectMap[$assignedRole],
 ]);

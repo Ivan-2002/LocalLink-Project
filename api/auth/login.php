@@ -1,6 +1,5 @@
 <?php
 // Validates credentials and start session 
-// api/auth/login.php
 require_once __DIR__ . '/../../includes/db.php';
 require_once __DIR__ . '/../../includes/auth.php';
 require_once __DIR__ . '/../../includes/helpers.php';
@@ -43,8 +42,7 @@ $_SESSION['role']    = $user['role'];
 // RBAC redirect URLs
 $redirectMap = [
     'admin'  => BASE_URL . '../admin/dashboard.php',
-    'seller' => BASE_URL . 'seller/dashboard.php',
-    'buyer'  => BASE_URL . 'index.php',
+    'user'  => BASE_URL . 'index.php',
 ];
 
 jsonResponse([

@@ -1,0 +1,187 @@
+<?php
+// Homepage
+require_once __DIR__ . '/../config/config.php';
+require_once __DIR__ . '/../includes/auth.php';
+require_once __DIR__ . '/../includes/db.php';
+require_once __DIR__ . '/../includes/helpers.php';
+
+// Fetch categories for sidebar
+$catStmt = $pdo->query("SELECT id, name FROM categories WHERE parent_id IS NULL ORDER BY name");
+$categories = $catStmt->fetchAll();
+
+$pageTitle = 'Home — LocalLink';
+$userName  = $_SESSION['name'] ?? 'Guest';
+?>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title><?= $pageTitle ?></title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>assets/css/style.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>assets/css/home.css">
+</head>
+
+<body class="home-page">
+
+    <!-- NAV BAR -->
+    <header class="top-navbar">
+        <div class="nav-left">
+            <a href="index.php" class="brand-logo">
+                LocalLink <span class="logo-icon">🛍️</span>
+            </a>
+        </div>
+
+        <div class="nav-center">
+            <div class="search-wrap">
+                <span class="search-icon">🔍</span>
+                <input type="text" id="searchInput" class="search-bar" placeholder="Search">
+            </div>
+        </div>
+
+        <div class="nav-right">
+            <a href="<?= BASE_URL ?>cart.php" class="nav-icon-btn" title="Cart">🛒</a>
+            <a href="<?= BASE_URL ?>messages.php" class="nav-icon-btn" title="Messages">💬</a>
+            <a href="#" class="nav-icon-btn" title="Notifications">🔔</a>
+            <?php if (isLoggedIn()): ?>
+                <div class="avatar-wrap" id="avatarToggle">
+                    <div class="avatar-circle"><?= strtoupper(substr($userName, 0, 1)) ?></div>
+                    <div class="avatar-dropdown" id="avatarDropdown">
+                        <a href="<?= BASE_URL ?>profile.php">👤 Profile</a>
+                        <a href="<?= BASE_URL ?>orders.php">📦 Orders</a>
+                        <hr>
+                        <a href="<?= BASE_URL ?>logout.php" class="text-danger">Logout</a>
+                    </div>
+                </div>
+            <?php else: ?>
+                <a href="<?= BASE_URL ?>login.php" class="btn-login-nav">Login</a>
+            <?php endif; ?>
+        </div>
+    </header>
+
+    <!-- SECOND NAV BAR -->
+    <nav class="secondary-nav">
+        <div class="sec-nav-left">
+            <button class="hamburger-btn" id="sidebarToggle">
+                <span></span><span></span><span></span>
+            </button>
+            <a href="#" class="sec-nav-link active" data-tab="all">Categories</a>
+            <a href="#" class="sec-nav-link" data-tab="for_you">For You</a>
+            <a href="#" class="sec-nav-link" data-tab="spotlights">Community Spotlights</a>
+        </div>
+        <div class="sec-nav-right">
+            <?php if (isLoggedIn()): ?>
+                <a href="<?= BASE_URL ?>seller/add-product.php" class="btn-list-item">+ List a New Item</a>
+            <?php endif; ?>
+        </div>
+    </nav>
+
+    <!-- MAIN LAYOUT -->
+    <div class="home-layout">
+
+        <!-- SIDE BAR -->
+        <aside class="left-sidebar" id="leftSidebar">
+            <div class="sidebar-user">
+                <p class="sidebar-hello">Hello <?= isLoggedIn() ? 'User' : 'Guest' ?></p>
+                <p class="sidebar-username"><?= sanitize($userName) ?></p>
+            </div>
+            <div class="sidebar-label">Categories</div>
+            <ul class="cat-list">
+                <li class="cat-item <?= !isset($_GET['category']) ? 'active' : '' ?>">
+                    <a href="index.php">All Items</a>
+                </li>
+                <?php foreach ($categories as $cat): ?>
+                    <li class="cat-item <?= (isset($_GET['category']) && $_GET['category'] == $cat['id']) ? 'active' : '' ?>">
+                        <a href="index.php?category=<?= $cat['id'] ?>">
+                            <?= sanitize($cat['name']) ?>
+                            <span class="cat-arrow">›</span>
+                        </a>
+                    </li>
+                <?php endforeach; ?>
+            </ul>
+        </aside>
+
+        <!-- ── SIDEBAR OVERLAY (mobile) ─────────────── -->
+        <div class="sidebar-overlay d-none" id="sidebarOverlay"></div>
+
+        <!-- MAIN CONTENT -->
+        <div class="main-content">
+
+            <!-- Filter bar -->
+            <div class="filter-bar">
+                <strong class="filter-title">Filters</strong>
+                <div class="filter-group">
+                    <label>Location</label>
+                    <input type="text" id="filterLocation" class="filter-input" placeholder="Any location">
+                </div>
+                <div class="filter-group">
+                    <label>Sort by</label>
+                    <select id="filterSort" class="filter-select">
+                        <option value="newest">Newest</option>
+                        <option value="price_asc">Price: Low to High</option>
+                        <option value="price_desc">Price: High to Low</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Date Listed</label>
+                    <select id="filterDate" class="filter-select">
+                        <option value="">Any time</option>
+                        <option value="today">Today</option>
+                        <option value="week">This week</option>
+                        <option value="month">This month</option>
+                    </select>
+                </div>
+                <button class="btn-apply-filter" id="applyFilter">Apply</button>
+            </div>
+
+            <!-- Local Favorites Carousel -->
+            <div class="section-header">
+                <span class="section-title">⭐ Local Favorites</span>
+            </div>
+            <div class="carousel-wrap">
+                <button class="carousel-btn left" id="carouselPrev">&#8249;</button>
+                <div class="carousel-track" id="carouselTrack">
+                    <!-- Loaded by JS -->
+                    <div class="carousel-placeholder">Loading favourites...</div>
+                </div>
+                <button class="carousel-btn right" id="carouselNext">&#8250;</button>
+            </div>
+
+            <!-- Product Grid -->
+            <div class="section-header mt-4">
+                <span class="section-title">🛍️ All Listings</span>
+                <span class="product-count" id="productCount"></span>
+            </div>
+            <div class="product-grid" id="productGrid">
+                <!-- Loaded by JS -->
+                <div class="loading-state">Loading products...</div>
+            </div>
+
+            <!-- No results -->
+            <div class="empty-state d-none" id="emptyState">
+                <p>😕 No products found.</p>
+                <small>Try a different category or search term.</small>
+            </div>
+
+        </div><!-- /main-content -->
+    </div><!-- /home-layout -->
+
+    <!-- FOOTER -->
+    <footer class="home-footer">
+        <span>© 2026 TownMarket — Community Market | Cape Town</span>
+        <div class="footer-links">
+            <a href="#">Help</a>
+            <a href="#">Contact</a>
+            <a href="#">About our Community</a>
+        </div>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="<?= BASE_URL ?>assets/js/home.js"></script>
+</body>
+
+</html>
