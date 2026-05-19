@@ -36,15 +36,25 @@ if (!$productId) redirect(BASE_URL . 'index.php');
             </div>
         </div>
         <div class="nav-right">
-            <a href="<?= BASE_URL ?>cart.php" class="nav-icon-btn">🛒</a>
+            <!-- <a href="<?= BASE_URL ?>cart.php" class="nav-icon-btn">🛒</a> -->
             <a href="<?= BASE_URL ?>messages.php" class="nav-icon-btn">💬</a>
-            <a href="#" class="nav-icon-btn">🔔</a>
+            <div class="nav-icon-btn notif-wrap" id="bellWrap" style="position:relative; cursor:pointer;">
+                🔔
+                <span class="notif-badge d-none" id="notifBadge"
+                    style="position:absolute; top:-4px; right:-4px;
+               background:#e03131; color:#fff;
+               font-size:.62rem; font-weight:800;
+               min-width:18px; height:18px;
+               border-radius:9px; display:flex;
+               align-items:center; justify-content:center;
+               padding:0 4px; border:2px solid #fff;">0</span>
+            </div>
             <?php if (isLoggedIn()): ?>
                 <div class="avatar-wrap" id="avatarToggle">
                     <div class="avatar-circle"><?= strtoupper(substr($_SESSION['name'], 0, 1)) ?></div>
                     <div class="avatar-dropdown" id="avatarDropdown">
-                        <a href="profile.php">👤 Profile</a>
-                        <a href="orders.php">📦 Orders</a>
+                        <a href="dashboard.php">👤 Profile</a>
+                        <!-- <a href="orders.php">📦 Orders</a> -->
                         <hr>
                         <a href="logout.php" class="text-danger">Logout</a>
                     </div>
@@ -186,6 +196,31 @@ if (!$productId) redirect(BASE_URL . 'index.php');
         const USER_ID = <?= $_SESSION['user_id'] ?? 0 ?>;
     </script>
     <script src="<?= BASE_URL ?>assets/js/product.js"></script>
+    <script>
+        $(function() {
+            // Poll notification count every 10 seconds
+            function pollNotifications() {
+                $.get(BASE_URL + '../api/messages/get-unread-count.php')
+                    .done(res => {
+                        if (!res.success) return;
+                        const badge = $('#notifBadge');
+                        if (res.unread > 0) {
+                            badge.text(res.unread).removeClass('d-none').css('display', 'flex');
+                        } else {
+                            badge.addClass('d-none');
+                        }
+                    });
+            }
+
+            // Bell click → go to messages
+            $('#bellWrap').on('click', () => {
+                window.location.href = BASE_URL + 'messages.php';
+            });
+
+            pollNotifications();
+            setInterval(pollNotifications, 10000);
+        });
+    </script>
 </body>
 
 </html>

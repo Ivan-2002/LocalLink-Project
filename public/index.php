@@ -29,6 +29,7 @@ $userName  = $_SESSION['name'] ?? 'Guest';
 <body class="home-page">
 
     <!-- NAV BAR -->
+
     <header class="top-navbar">
         <div class="nav-left">
             <a href="index.php" class="brand-logo">
@@ -44,15 +45,25 @@ $userName  = $_SESSION['name'] ?? 'Guest';
         </div>
 
         <div class="nav-right">
-            <a href="<?= BASE_URL ?>cart.php" class="nav-icon-btn" title="Cart">🛒</a>
+            <!-- <a href="<?= BASE_URL ?>cart.php" class="nav-icon-btn" title="Cart">🛒</a> -->
             <a href="<?= BASE_URL ?>messages.php" class="nav-icon-btn" title="Messages">💬</a>
-            <a href="#" class="nav-icon-btn" title="Notifications">🔔</a>
+            <div class="nav-icon-btn notif-wrap" id="bellWrap" style="position:relative; cursor:pointer;">
+                🔔
+                <span class="notif-badge d-none" id="notifBadge"
+                    style="position:absolute; top:-4px; right:-4px;
+               background:#e03131; color:#fff;
+               font-size:.62rem; font-weight:800;
+               min-width:18px; height:18px;
+               border-radius:9px; display:flex;
+               align-items:center; justify-content:center;
+               padding:0 4px; border:2px solid #fff;">0</span>
+            </div>
             <?php if (isLoggedIn()): ?>
                 <div class="avatar-wrap" id="avatarToggle">
                     <div class="avatar-circle"><?= strtoupper(substr($userName, 0, 1)) ?></div>
                     <div class="avatar-dropdown" id="avatarDropdown">
-                        <a href="<?= BASE_URL ?>profile.php">👤 Profile</a>
-                        <a href="<?= BASE_URL ?>orders.php">📦 Orders</a>
+                        <a href="<?= BASE_URL ?>dashboard.php">👤 Profile</a>
+                        <!-- <a href="<?= BASE_URL ?>orders.php">📦 Orders</a> -->
                         <hr>
                         <a href="<?= BASE_URL ?>logout.php" class="text-danger">Logout</a>
                     </div>
@@ -70,8 +81,8 @@ $userName  = $_SESSION['name'] ?? 'Guest';
                 <span></span><span></span><span></span>
             </button>
             <a href="#" class="sec-nav-link active" data-tab="all">Categories</a>
-            <a href="#" class="sec-nav-link" data-tab="for_you">For You</a>
-            <a href="#" class="sec-nav-link" data-tab="spotlights">Community Spotlights</a>
+            <!-- <a href="#" class="sec-nav-link" data-tab="for_you">For You</a>
+            <a href="#" class="sec-nav-link" data-tab="spotlights">Community Spotlights</a> -->
         </div>
         <div class="sec-nav-right">
             <?php if (isLoggedIn()): ?>
@@ -139,17 +150,17 @@ $userName  = $_SESSION['name'] ?? 'Guest';
             </div>
 
             <!-- Local Favorites Carousel -->
-            <div class="section-header">
+            <!-- <div class="section-header">
                 <span class="section-title">⭐ Local Favorites</span>
             </div>
             <div class="carousel-wrap">
                 <button class="carousel-btn left" id="carouselPrev">&#8249;</button>
                 <div class="carousel-track" id="carouselTrack">
-                    <!-- Loaded by JS -->
+                     Loaded by JS 
                     <div class="carousel-placeholder">Loading favourites...</div>
                 </div>
                 <button class="carousel-btn right" id="carouselNext">&#8250;</button>
-            </div>
+            </div> -->
 
             <!-- Product Grid -->
             <div class="section-header mt-4">
@@ -182,6 +193,32 @@ $userName  = $_SESSION['name'] ?? 'Guest';
 
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="<?= BASE_URL ?>assets/js/home.js"></script>
+    <script>
+        $(function() {
+            // Poll notification count every 10 seconds
+            function pollNotifications() {
+                $.get(BASE_URL + '../api/messages/get-unread-count.php')
+                    .done(res => {
+                        if (!res.success) return;
+                        const badge = $('#notifBadge');
+                        if (res.unread > 0) {
+                            badge.text(res.unread).removeClass('d-none').css('display', 'flex');
+                        } else {
+                            badge.addClass('d-none');
+                        }
+                    });
+            }
+
+            // Bell click → go to messages
+            $('#bellWrap').on('click', () => {
+                window.location.href = BASE_URL + 'messages.php';
+            });
+
+            pollNotifications();
+            setInterval(pollNotifications, 10000);
+        });
+    </script>
+
 </body>
 
 </html>

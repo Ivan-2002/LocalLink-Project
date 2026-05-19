@@ -1,7 +1,5 @@
 <?php
-// includes/db.php
 // PDO database connection — gives you the $pdo variable
-// Always require config.php BEFORE this file
 
 require_once __DIR__ . '/../config/config.php';
 

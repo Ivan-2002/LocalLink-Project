@@ -1,0 +1,677 @@
+/* ============================================================
+   dashboard.css — Combined Dashboard + Profile Page
+   ============================================================ */
+
+.db-page {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 20px 40px;
+}
+
+/* ══════════════════════════════════════════════
+   PROFILE HERO
+══════════════════════════════════════════════ */
+.db-hero {
+  background: linear-gradient(135deg, #2b2017 0%, #4a3c30 100%);
+  border-radius: 0 0 24px 24px;
+  padding: 32px 28px;
+  margin-bottom: 24px;
+  color: #fff;
+}
+
+.db-hero-inner {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+/* Avatar circle */
+.db-avatar {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: #1a8a6f;
+  color: #fff;
+  font-size: 1.8rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  flex-shrink: 0;
+}
+
+.db-hero-info {
+  flex: 1;
+  min-width: 150px;
+}
+
+.db-hero-name {
+  font-family: "DM Serif Display", serif;
+  font-size: 1.5rem;
+  color: #fff;
+  margin: 0 0 4px;
+}
+
+.db-hero-meta {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.65);
+  margin: 0;
+}
+
+/* Stats row */
+.db-hero-stats {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  padding: 14px 20px;
+  gap: 0;
+}
+
+.db-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 20px;
+}
+
+.db-stat-value {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #fff;
+  line-height: 1;
+}
+
+.db-stat-label {
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.6);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-top: 3px;
+}
+
+.db-stat-divider {
+  width: 1px;
+  height: 36px;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* ══════════════════════════════════════════════
+   TABS
+══════════════════════════════════════════════ */
+.db-tabs-wrap {
+  margin-bottom: 20px;
+}
+
+.db-tabs {
+  display: flex;
+  gap: 4px;
+  background: #fff;
+  border-radius: 14px;
+  padding: 5px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.db-tab {
+  flex: 1;
+  padding: 11px 12px;
+  border: none;
+  background: transparent;
+  border-radius: 10px;
+  font-family: "DM Sans", sans-serif;
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: #9a8878;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.db-tab:hover {
+  background: #fdf3e3;
+  color: #4a3c30;
+}
+.db-tab.active {
+  background: #2b2017;
+  color: #fff;
+  font-weight: 700;
+}
+
+/* ══════════════════════════════════════════════
+   PANEL CONTENT
+══════════════════════════════════════════════ */
+.db-panel {
+  display: none;
+}
+.db-panel.active {
+  display: block;
+  animation: fadeUp 0.3s ease both;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.db-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.db-panel-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #2b2017;
+  margin: 0;
+}
+
+/* ── Filter row ────────────────────────────── */
+.db-filter-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.db-filter-btn {
+  padding: 6px 16px;
+  border: 1.5px solid #e0d5c8;
+  border-radius: 20px;
+  background: #fff;
+  font-family: "DM Sans", sans-serif;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #6b5a48;
+  cursor: pointer;
+  transition: all 0.18s;
+}
+.db-filter-btn:hover {
+  border-color: #c47e1a;
+  color: #c47e1a;
+}
+.db-filter-btn.active {
+  background: #2b2017;
+  border-color: #2b2017;
+  color: #fff;
+}
+
+/* ══════════════════════════════════════════════
+   LISTINGS GRID
+══════════════════════════════════════════════ */
+.db-listings-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 16px;
+}
+
+/* Listing card */
+.db-listing-card {
+  background: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
+  position: relative;
+}
+.db-listing-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Image */
+.db-listing-img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  background: #f5ede0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  color: #c8b89a;
+}
+.db-listing-img img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+}
+
+/* Status badge on image */
+.db-listing-status {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 20px;
+}
+.db-listing-status.active {
+  background: #d3f9d8;
+  color: #2b7a0b;
+}
+.db-listing-status.pending {
+  background: #fff3cd;
+  color: #856404;
+}
+.db-listing-status.removed {
+  background: #ffe3e3;
+  color: #e03131;
+}
+
+.db-listing-info {
+  padding: 12px 14px;
+}
+
+.db-listing-title {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #2b2017;
+  margin-bottom: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.db-listing-cat {
+  font-size: 0.75rem;
+  color: #9a8878;
+  margin-bottom: 6px;
+}
+.db-listing-price {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1a8a6f;
+  margin-bottom: 12px;
+}
+
+/* Action buttons on card */
+.db-listing-actions {
+  display: flex;
+  gap: 8px;
+}
+.db-btn-edit {
+  flex: 1;
+  padding: 7px;
+  background: #f5ede0;
+  color: #4a3c30;
+  border: 1.5px solid #e0d5c8;
+  border-radius: 8px;
+  font-family: "DM Sans", sans-serif;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.db-btn-edit:hover {
+  background: #fdf3e3;
+  color: #c47e1a;
+  border-color: #c47e1a;
+}
+
+.db-btn-del {
+  padding: 7px 12px;
+  background: #fff5f5;
+  color: #e03131;
+  border: 1.5px solid #ffc9c9;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.db-btn-del:hover {
+  background: #ffe3e3;
+}
+
+/* ══════════════════════════════════════════════
+   ORDERS LIST
+══════════════════════════════════════════════ */
+.db-orders-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.db-order-card {
+  background: #fff;
+  border-radius: 14px;
+  padding: 18px 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  transition: box-shadow 0.18s;
+}
+.db-order-card:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.09);
+}
+
+.db-order-left {
+  flex: 1;
+  min-width: 160px;
+}
+
+.db-order-id {
+  font-size: 0.75rem;
+  color: #9a8878;
+  font-weight: 600;
+  margin-bottom: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.db-order-items {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #2b2017;
+  margin-bottom: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 300px;
+}
+.db-order-date {
+  font-size: 0.78rem;
+  color: #9a8878;
+}
+
+.db-order-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+}
+.db-order-total {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #1a8a6f;
+}
+.db-order-status {
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 3px 12px;
+  border-radius: 20px;
+}
+.db-order-status.pending {
+  background: #fff3cd;
+  color: #856404;
+}
+.db-order-status.confirmed {
+  background: #e8f4f1;
+  color: #1a8a6f;
+}
+.db-order-status.completed {
+  background: #d3f9d8;
+  color: #2b7a0b;
+}
+.db-order-status.cancelled {
+  background: #ffe3e3;
+  color: #e03131;
+}
+
+.db-order-pay {
+  font-size: 0.75rem;
+  color: #9a8878;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* ══════════════════════════════════════════════
+   PROFILE SETTINGS
+══════════════════════════════════════════════ */
+.db-profile-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.db-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 22px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.db-card-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #2b2017;
+  margin-bottom: 18px;
+  padding-bottom: 12px;
+  border-bottom: 1.5px solid #f0e8dd;
+}
+
+.db-field {
+  margin-bottom: 14px;
+}
+
+.db-label {
+  display: block;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #6b5a48;
+  margin-bottom: 5px;
+}
+
+.db-input {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1.5px solid #e0d5c8;
+  border-radius: 10px;
+  background: #fdf6ee;
+  font-family: "DM Sans", sans-serif;
+  font-size: 0.9rem;
+  color: #2b2017;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
+}
+.db-input::placeholder {
+  color: #b5a48a;
+}
+.db-input:focus {
+  outline: none;
+  border-color: #c47e1a;
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(196, 126, 26, 0.12);
+}
+
+/* Account info card */
+.db-account-card {
+  grid-column: 1 / -1;
+}
+
+.db-account-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid #f0e8dd;
+}
+.db-account-row:last-of-type {
+  border-bottom: none;
+}
+
+.db-account-label {
+  font-size: 0.85rem;
+  color: #9a8878;
+}
+.db-account-value {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #2b2017;
+}
+
+/* ══════════════════════════════════════════════
+   SHARED BUTTONS
+══════════════════════════════════════════════ */
+.db-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 20px;
+  background: #1a8a6f;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-family: "DM Sans", sans-serif;
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: none;
+  transition:
+    background 0.18s,
+    transform 0.15s;
+}
+.db-btn-primary:hover {
+  background: #147a61;
+  color: #fff;
+  transform: translateY(-1px);
+}
+.db-btn-primary.w-100 {
+  width: 100%;
+  justify-content: center;
+}
+
+.db-btn-outline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px 20px;
+  background: transparent;
+  color: #2b2017;
+  border: 1.5px solid #d0c4b8;
+  border-radius: 10px;
+  font-family: "DM Sans", sans-serif;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background 0.18s,
+    border-color 0.18s;
+}
+.db-btn-outline:hover {
+  background: #f5ede0;
+  border-color: #c47e1a;
+}
+.db-btn-outline.w-100 {
+  width: 100%;
+}
+
+.db-btn-danger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 20px;
+  background: #fff5f5;
+  color: #e03131;
+  border: 1.5px solid #ffc9c9;
+  border-radius: 10px;
+  font-family: "DM Sans", sans-serif;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.18s;
+}
+.db-btn-danger:hover {
+  background: #ffe3e3;
+  color: #c12a2a;
+}
+.db-btn-danger.w-100 {
+  width: 100%;
+}
+
+/* ══════════════════════════════════════════════
+   EMPTY + LOADING STATES
+══════════════════════════════════════════════ */
+.db-loading {
+  text-align: center;
+  padding: 50px 20px;
+  color: #9a8878;
+  font-size: 0.9rem;
+}
+
+.db-empty {
+  text-align: center;
+  padding: 50px 20px;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+.db-empty-icon {
+  font-size: 2.8rem;
+  margin-bottom: 12px;
+}
+.db-empty-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #2b2017;
+  margin-bottom: 4px;
+}
+.db-empty-sub {
+  font-size: 0.85rem;
+  color: #9a8878;
+  margin-bottom: 0;
+}
+
+/* ══════════════════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  .db-hero-inner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .db-hero-stats {
+    width: 100%;
+    justify-content: space-around;
+  }
+  .db-stat {
+    padding: 0 10px;
+  }
+  .db-tabs {
+    overflow-x: auto;
+  }
+  .db-tab {
+    font-size: 0.8rem;
+    padding: 9px 10px;
+  }
+  .db-profile-grid {
+    grid-template-columns: 1fr;
+  }
+  .db-account-card {
+    grid-column: 1;
+  }
+  .db-listings-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .db-listings-grid {
+    grid-template-columns: 1fr;
+  }
+  .db-hero {
+    border-radius: 0;
+  }
+}

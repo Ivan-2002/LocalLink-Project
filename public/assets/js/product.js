@@ -1,5 +1,4 @@
 // Fetches product data from API and renders the detail page
-
 $(function () {
   const API = BASE_URL + "../api/products/get-product.php?id=" + PRODUCT_ID;
 
@@ -219,5 +218,67 @@ $(function () {
       .replace(/</g, "&lt;")
       .replace(/>/g, "&gt;")
       .replace(/"/g, "&quot;");
+  }
+
+  // ── PHOTO UPLOAD LOGIC ──
+  const photoArea = $("#photoArea");
+
+  // Only run this if we are on a page with a photo upload area
+  if (photoArea.length > 0) {
+    const imageInput = $("#imageInput");
+    const imagePreview = $("#imagePreview");
+    const uploadPrompt = $("#uploadPrompt");
+    const removeImage = $("#removeImage");
+
+    // 1. Trigger the hidden file input
+    photoArea.on("click", function (e) {
+      // Only trigger if we didn't click the 'Remove' button specifically
+      if (!$(e.target).closest("#removeImage").length) {
+        imageInput.trigger("click");
+      }
+    });
+
+    // 2. Handle Image Selection & Preview
+    imageInput.on("change", function () {
+      const file = this.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          imagePreview.attr("src", e.target.result).removeClass("d-none");
+          uploadPrompt.addClass("d-none");
+          removeImage.removeClass("d-none");
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    // 3. Handle Remove
+    removeImage.on("click", function (e) {
+      e.stopPropagation();
+      imageInput.val(""); // Clear the actual file from the input
+      imagePreview.attr("src", "").addClass("d-none");
+      uploadPrompt.removeClass("d-none");
+      removeImage.addClass("d-none");
+    });
+
+    // ── DRAG AND DROP ADDITION ──
+    photoArea.on("dragover", function (e) {
+      e.preventDefault();
+      $(this).addClass("drag-active"); // Add a CSS class for visual feedback
+    });
+
+    photoArea.on("dragleave", function () {
+      $(this).removeClass("drag-active");
+    });
+
+    photoArea.on("drop", function (e) {
+      e.preventDefault();
+      $(this).removeClass("drag-active");
+      const files = e.originalEvent.dataTransfer.files;
+      if (files.length > 0) {
+        imageInput[0].files = files; // Assign files to the input
+        imageInput.trigger("change"); // Trigger the preview logic
+      }
+    });
   }
 });

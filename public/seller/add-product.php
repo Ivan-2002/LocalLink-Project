@@ -33,15 +33,26 @@ requireLogin();
             </a>
         </div>
         <div class="nav-right">
-            <a href="<?= BASE_URL ?>cart.php" class="nav-icon-btn">🛒</a>
+            <!-- <a href="<?= BASE_URL ?>cart.php" class="nav-icon-btn">🛒</a> -->
             <a href="<?= BASE_URL ?>messages.php" class="nav-icon-btn">💬</a>
-            <a href="#" class="nav-icon-btn">🔔</a>
+            <div class="nav-icon-btn notif-wrap" id="bellWrap" style="position:relative; cursor:pointer;">
+                🔔
+                <span class="notif-badge d-none" id="notifBadge"
+                    style="position:absolute; top:-4px; right:-4px;
+               background:#e03131; color:#fff;
+               font-size:.62rem; font-weight:800;
+               min-width:18px; height:18px;
+               border-radius:9px; display:flex;
+               align-items:center; justify-content:center;
+               padding:0 4px; border:2px solid #fff;">0</span>
+            </div>
+
             <div class="avatar-wrap" id="avatarToggle">
                 <div class="avatar-circle"><?= strtoupper(substr($_SESSION['name'], 0, 1)) ?></div>
                 <div class="avatar-dropdown" id="avatarDropdown">
-                    <a href="<?= BASE_URL ?>profile.php">👤 Profile</a>
-                    <a href="<?= BASE_URL ?>orders.php">📦 Orders</a>
-                    <a href="<?= BASE_URL ?>seller/dashboard.php">🏪 My Shop</a>
+                    <a href="<?= BASE_URL ?>dashboard.php">👤 Profile</a>
+                    <!-- <a href="<?= BASE_URL ?>orders.php">📦 Orders</a>
+                    <a href="<?= BASE_URL ?>seller/dashboard.php">🏪 My Shop</a> -->
                     <hr>
                     <a href="<?= BASE_URL ?>logout.php" class="text-danger">Logout</a>
                 </div>
@@ -159,7 +170,7 @@ requireLogin();
 
                 <!-- Buttons -->
                 <div class="ap-btn-row">
-                    <button type="button" class="ap-btn-draft" id="saveDraft">Save Draft</button>
+                    <!-- <button type="button" class="ap-btn-draft" id="saveDraft">Save Draft</button> -->
                     <button type="submit" class="ap-btn-submit">List Item</button>
                 </div>
 
@@ -181,15 +192,21 @@ requireLogin();
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script>
         const BASE_URL = '<?= BASE_URL ?>';
-
         $(function() {
 
             // ── Image upload & preview ─────────────────────────────────
             // Clicking the dashed area opens the file picker
+            // ── Image upload & preview ─────────────────────────────────
             $('#photoArea').on('click', function(e) {
-                if (!$(e.target).is('#removeImage')) {
+                // 1. Only trigger if the click wasn't ALREADY the input or the remove button
+                if (e.target.id !== 'imageInput' && !$(e.target).is('#removeImage')) {
                     $('#imageInput').trigger('click');
                 }
+            });
+
+            // 2. This is the "Shield": It stops the input's click from reaching #photoArea
+            $('#imageInput').on('click', function(e) {
+                e.stopPropagation();
             });
 
             $('#imageInput').on('change', function() {
@@ -197,8 +214,10 @@ requireLogin();
                 if (!file) return;
 
                 // Validate size (2MB)
-                if (file.size > 2 * 1024 * 1024) {
-                    showAlert('Image must be under 2MB.', 'danger');
+                const maxSize = 2 * 1024 * 1024; // 2MB
+                if (file.size > maxSize) {
+                    showAlert('Image is too large. Must be under 2MB.', 'danger');
+                    $(this).val(''); // Clear the input
                     return;
                 }
 
@@ -257,7 +276,7 @@ requireLogin();
                                 'success'
                             );
                             if (status === 'active') {
-                                setTimeout(() => window.location.href = BASE_URL + 'seller/dashboard.php', 1200);
+                                setTimeout(() => window.location.href = BASE_URL + 'index.php', 1200);
                             }
                         } else {
                             showAlert(res.error || 'Something went wrong.', 'danger');
@@ -288,6 +307,31 @@ requireLogin();
             });
             $(document).on('click', () => $('#avatarDropdown').removeClass('open'));
 
+        });
+    </script>
+    <script>
+        $(function() {
+            // Poll notification count every 10 seconds
+            function pollNotifications() {
+                $.get(BASE_URL + '../api/messages/get-unread-count.php')
+                    .done(res => {
+                        if (!res.success) return;
+                        const badge = $('#notifBadge');
+                        if (res.unread > 0) {
+                            badge.text(res.unread).removeClass('d-none').css('display', 'flex');
+                        } else {
+                            badge.addClass('d-none');
+                        }
+                    });
+            }
+
+            // Bell click → go to messages
+            $('#bellWrap').on('click', () => {
+                window.location.href = BASE_URL + 'messages.php';
+            });
+
+            pollNotifications();
+            setInterval(pollNotifications, 10000);
         });
     </script>
 </body>
