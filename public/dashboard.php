@@ -1,4 +1,5 @@
 <?php
+// User profile page
 require_once __DIR__ . '/../config/config.php';
 require_once __DIR__ . '/../includes/auth.php';
 require_once __DIR__ . '/../includes/helpers.php';
@@ -11,7 +12,7 @@ requireLogin();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>My Dashboard — TownMarket</title>
+    <title>My Dashboard — LocalLink</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
@@ -51,9 +52,26 @@ requireLogin();
                padding:0 4px; border:2px solid #fff;">0</span>
             </div>
             <div class="avatar-wrap" id="avatarToggle">
-                <div class="avatar-circle"><?= strtoupper(substr($_SESSION['name'], 0, 1)) ?></div>
+                <div class="avatar-circle" id="navAvatar">
+                    <?php if (!empty($_SESSION['avatar'])): ?>
+                        <img src="<?= BASE_URL ?>uploads/avatars/<?= $_SESSION['avatar'] ?>"
+                            alt="Profile"
+                            style="width:100%; height:100%; border-radius:50%; object-fit:cover;">
+                    <?php else: ?>
+                        <?= strtoupper(substr($_SESSION['name'], 0, 1)) ?>
+                    <?php endif; ?>
+                </div>
                 <div class="avatar-dropdown" id="avatarDropdown">
                     <a href="<?= BASE_URL ?>dashboard.php">👤 Profile</a>
+                    <hr>
+                    <?php if (isAdmin()): ?>
+                        <hr>
+                        <!-- Only admins see this link -->
+                        <a href="<?= BASE_URL ?>../admin/dashboard.php"
+                            style="color:#7c3aed; font-weight:700;">
+                            🛡️ Admin Panel
+                        </a>
+                    <?php endif; ?>
                     <hr>
                     <a href="<?= BASE_URL ?>logout.php" class="text-danger">Logout</a>
                 </div>
@@ -67,13 +85,24 @@ requireLogin();
         <!-- ── PROFILE HERO ───────────────────────────────────────── -->
         <div class="db-hero">
             <div class="db-hero-inner">
-                <div class="db-avatar" id="dbAvatar">
-                    <?= strtoupper(substr($_SESSION['name'], 0, 1)) ?>
+
+                <!-- Clickable avatar — clicking opens file picker -->
+                <div class="db-avatar-wrap" id="heroAvatarWrap" title="Change photo">
+                    <div class="db-avatar" id="dbAvatar">
+                        <!-- JS fills this with <img> or initial letter -->
+                    </div>
+                    <div class="db-avatar-overlay">📷</div>
+                    <!-- Hidden file input -->
+                    <input type="file" id="avatarFileInput"
+                        accept="image/jpeg,image/png,image/webp"
+                        style="display:none">
                 </div>
+
                 <div class="db-hero-info">
                     <h1 class="db-hero-name" id="dbName"><?= sanitize($_SESSION['name']) ?></h1>
                     <p class="db-hero-meta" id="dbMeta">Loading...</p>
                 </div>
+
                 <div class="db-hero-stats" id="dbStats">
                     <div class="db-stat">
                         <span class="db-stat-value" id="statListings">—</span>
@@ -167,17 +196,36 @@ requireLogin();
                     <!-- Profile form -->
                     <div class="db-card">
                         <h3 class="db-card-title">Personal Information</h3>
+
+                        <!-- Avatar section inside the profile form card -->
+                        <div class="db-avatar-section">
+                            <div class="db-avatar-preview" id="profileAvatarPreview">
+                                <div class="db-avatar-preview-overlay">📷</div>
+                                <!-- JS fills this -->
+                            </div>
+                            <div class="db-avatar-info">
+                                <h4>Profile Photo</h4>
+                                <p>JPG, PNG or WebP.<br>Max size 2MB.</p>
+                                <label class="db-btn-upload-avatar" for="profileAvatarInput">
+                                    📷 Change Photo
+                                </label>
+                            </div>
+                        </div>
+
                         <div id="profileAlert" class="alert d-none mb-3"></div>
-                        <form id="profileForm">
+
+                        <form id="profileForm" enctype="multipart/form-data">
+                            <!-- Hidden file input triggered by the label above -->
+                            <input type="file" id="profileAvatarInput" name="avatar"
+                                accept="image/jpeg,image/png,image/webp" style="display:none">
+
                             <div class="db-field">
                                 <label class="db-label">Full Name</label>
-                                <input type="text" name="name" id="profileName"
-                                    class="db-input" required>
+                                <input type="text" name="name" id="profileName" class="db-input" required>
                             </div>
                             <div class="db-field">
                                 <label class="db-label">Email Address</label>
-                                <input type="email" name="email" id="profileEmail"
-                                    class="db-input" required>
+                                <input type="email" name="email" id="profileEmail" class="db-input" required>
                             </div>
                             <div class="db-field">
                                 <label class="db-label">Location</label>

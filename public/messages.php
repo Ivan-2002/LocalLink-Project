@@ -47,6 +47,15 @@ $openProductId = (int)($_GET['product'] ?? 0);
                     <a href="<?= BASE_URL ?>dashboard.php">👤 Profile</a>
                     <a href="<?= BASE_URL ?>messages.php">💬 Messages</a>
                     <hr>
+                    <?php if (isAdmin()): ?>
+                        <hr>
+                        <!-- Only admins see this link -->
+                        <a href="<?= BASE_URL ?>../admin/dashboard.php"
+                            style="color:#7c3aed; font-weight:700;">
+                            🛡️ Admin Panel
+                        </a>
+                    <?php endif; ?>
+                    <hr>
                     <a href="<?= BASE_URL ?>logout.php" class="text-danger">Logout</a>
                 </div>
             </div>

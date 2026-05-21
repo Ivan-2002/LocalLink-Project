@@ -9,9 +9,17 @@ requireLogin();
 $userId = (int)$_SESSION['user_id'];
 
 // ── Profile ───────────────────────────────────────────────────
-$stmt = $pdo->prepare("SELECT id, name, email, location, role, created_at FROM users WHERE id = ?");
+$stmt = $pdo->prepare("
+    SELECT id, name, email, location, role, avatar, created_at
+    FROM users WHERE id = ?
+");
 $stmt->execute([$userId]);
 $user = $stmt->fetch();
+
+// Build full avatar URL if one exists
+$user['avatar_url'] = $user['avatar']
+    ? BASE_URL . 'uploads/avatars/' . $user['avatar']
+    : null;
 
 // ── My Listings ───────────────────────────────────────────────
 $stmt = $pdo->prepare("
@@ -36,7 +44,7 @@ $stmt = $pdo->prepare("
            GROUP_CONCAT(p.title SEPARATOR ', ') AS items,
            COUNT(oi.id) AS item_count
     FROM orders o
-    JOIN order_items oi ON oi.order_id = o.id
+    JOIN order_items oi ON oi.order_id  = o.id
     JOIN products   p  ON oi.product_id = p.id
     WHERE o.buyer_id = ?
     GROUP BY o.id

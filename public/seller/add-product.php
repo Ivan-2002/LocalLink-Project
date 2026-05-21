@@ -54,6 +54,15 @@ requireLogin();
                     <!-- <a href="<?= BASE_URL ?>orders.php">📦 Orders</a>
                     <a href="<?= BASE_URL ?>seller/dashboard.php">🏪 My Shop</a> -->
                     <hr>
+                    <?php if (isAdmin()): ?>
+                        <hr>
+                        <!-- Only admins see this link -->
+                        <a href="<?= BASE_URL ?>../admin/dashboard.php"
+                            style="color:#7c3aed; font-weight:700;">
+                            🛡️ Admin Panel
+                        </a>
+                    <?php endif; ?>
+                    <hr>
                     <a href="<?= BASE_URL ?>logout.php" class="text-danger">Logout</a>
                 </div>
             </div>

@@ -3,11 +3,10 @@
 require_once __DIR__ . '/../config/config.php';
 require_once __DIR__ . '/../includes/auth.php';
 
-// if (isLoggedIn()) {
-//   if (isAdmin())  redirect(BASE_URL . '../admin/dashboard.php');
-//   if (isSeller()) redirect(BASE_URL . 'seller/dashboard.php');
-//   redirect(BASE_URL . 'index.php');
-// }
+if (isLoggedIn()) {
+  if (isAdmin())  redirect(BASE_URL . '../admin/dashboard.php');
+  redirect(BASE_URL . 'index.php');
+}
 
 ?>
 <!DOCTYPE html>

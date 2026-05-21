@@ -10,6 +10,7 @@ $(function () {
         dashData = res;
 
         // Populate hero
+        updateAvatarDisplay(res.user.avatar_url, res.user.name);
         $("#dbName").text(res.user.name);
         $("#dbMeta").text(
           (res.user.location || "No location set") +
@@ -21,6 +22,7 @@ $(function () {
         $("#statSince").text(res.stats.member_since);
 
         // Populate profile form
+        updateProfileAvatarDisplay(res.user.avatar_url, res.user.name);
         $("#profileName").val(res.user.name);
         $("#profileEmail").val(res.user.email);
         $("#profileLocation").val(res.user.location || "");
@@ -145,32 +147,6 @@ $(function () {
     renderListings(dashData.listings, $(this).data("filter"));
   });
 
-  // ── Update profile ─────────────────────────────────────────
-  $("#profileForm").on("submit", function (e) {
-    e.preventDefault();
-    const btn = $(this).find("button[type=submit]");
-    btn.prop("disabled", true).text("Saving...");
-
-    $.post(API + "update-profile.php", $(this).serialize())
-      .done((res) => {
-        if (res.success) {
-          showFormAlert("profileAlert", "✅ Profile updated!", "success");
-          // Update hero name live
-          $("#dbName").text($("#profileName").val());
-        } else {
-          showFormAlert("profileAlert", res.error, "danger");
-        }
-      })
-      .fail((xhr) =>
-        showFormAlert(
-          "profileAlert",
-          xhr.responseJSON?.error || "Failed.",
-          "danger",
-        ),
-      )
-      .always(() => btn.prop("disabled", false).text("Save Changes"));
-  });
-
   // ── Change password ────────────────────────────────────────
   $("#passwordForm").on("submit", function (e) {
     e.preventDefault();
@@ -235,6 +211,129 @@ $(function () {
       .replace(/</g, "&lt;")
       .replace(/>/g, "&gt;")
       .replace(/"/g, "&quot;");
+  }
+
+  // ── Avatar display helpers ─────────────────────────────────
+  function updateAvatarDisplay(url, name) {
+    const avatar = $("#dbAvatar");
+    if (url) {
+      avatar.html(`<img src="${url}" alt="Avatar">`);
+    } else {
+      avatar.text(name.charAt(0).toUpperCase());
+    }
+  }
+
+  function updateProfileAvatarDisplay(url, name) {
+    const preview = $("#profileAvatarPreview");
+    if (url) {
+      // Keep the overlay, add the image behind it
+      preview.prepend(`<img src="${url}" alt="Avatar"
+                         style="position:absolute;inset:0;width:100%;
+                                height:100%;object-fit:cover;border-radius:50%;">`);
+    } else {
+      preview.prepend(`<span style="font-size:2rem;font-weight:700;color:#fff">
+                       ${name.charAt(0).toUpperCase()}</span>`);
+    }
+  }
+
+  // ── HERO AVATAR CLICK ──
+  $("#heroAvatarWrap").on("click", function (e) {
+    // Only trigger if we didn't click the input itself
+    if (e.target.id !== "avatarFileInput") {
+      $("#avatarFileInput").trigger("click");
+    }
+  });
+
+  // ── PROFILE TAB AVATAR CLICK ──
+  $("#profileAvatarPreview").on("click", function (e) {
+    if (e.target.id !== "profileAvatarInput") {
+      $("#profileAvatarInput").trigger("click");
+    }
+  });
+
+  // ── SHIELD: Stop bubbling from inputs ──
+  $("#avatarFileInput, #profileAvatarInput").on("click", function (e) {
+    e.stopPropagation();
+  });
+
+  // ── HANDLE FILE SELECTION (Hero) ──
+  $("#avatarFileInput").on("change", function () {
+    const file = this.files[0];
+    if (!file) return;
+
+    // Show preview in hero immediately
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      $("#dbAvatar").html(`<img src="${e.target.result}" alt="Avatar">`);
+    };
+    reader.readAsDataURL(file);
+
+    // Sync to the actual form input WITHOUT triggering another change event
+    const dataTransfer = new DataTransfer();
+    dataTransfer.items.add(file);
+    $("#profileAvatarInput")[0].files = dataTransfer.files;
+
+    // Auto-submit the profile form
+    submitProfileWithAvatar();
+  });
+
+  // ── HANDLE FILE SELECTION (Profile Tab) ──
+  $("#profileAvatarInput").on("change", function () {
+    const file = this.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      // Update the Profile Tab Preview
+      $("#profileAvatarPreview img, #profileAvatarPreview span").remove();
+      $("#profileAvatarPreview").prepend(
+        `<img src="${e.target.result}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:50%;">`,
+      );
+      // Also update the Hero Preview
+      $("#dbAvatar").html(`<img src="${e.target.result}" alt="Avatar">`);
+    };
+    reader.readAsDataURL(file);
+  });
+
+  // ── Profile form submit (with FormData for file) ──────────
+  $("#profileForm").on("submit", function (e) {
+    e.preventDefault();
+    submitProfileWithAvatar();
+  });
+
+  function submitProfileWithAvatar() {
+    const btn = $("#profileForm button[type=submit]");
+    const formData = new FormData($("#profileForm")[0]);
+    btn.prop("disabled", true).text("Saving...");
+
+    $.ajax({
+      url: BASE_URL + "../api/user/update-profile.php",
+      type: "POST",
+      data: formData,
+      processData: false,
+      contentType: false,
+    })
+      .done((res) => {
+        if (res.success) {
+          showFormAlert("profileAlert", "✅ Profile updated!", "success");
+          $("#dbName").text($("#profileName").val());
+          // Update hero avatar if new URL returned
+          if (res.avatar_url) {
+            updateAvatarDisplay(res.avatar_url, $("#profileName").val());
+            updateProfileAvatarDisplay(res.avatar_url, $("#profileName").val());
+          }
+        } else {
+          showFormAlert("profileAlert", res.error, "danger");
+        }
+      })
+      .fail((xhr) =>
+        showFormAlert(
+          "profileAlert",
+          xhr.responseJSON?.error || "Failed.",
+          "danger",
+        ),
+      )
+      .always(() => btn.prop("disabled", false).text("Save Changes"));
   }
 
   // ── Init ──────────────────────────────────────────────────

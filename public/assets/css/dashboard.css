@@ -675,3 +675,153 @@
     border-radius: 0;
   }
 }
+
+/* ============================================================
+   APPEND these styles to the bottom of dashboard.css
+   ============================================================ */
+
+/* ── Clickable avatar with camera overlay ─────────────────── */
+.db-avatar-wrap {
+  position: relative;
+  width: 72px;
+  height: 72px;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+/* The circle itself */
+.db-avatar {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: #1a8a6f;
+  color: #fff;
+  font-size: 1.8rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  overflow: hidden; /* clips the photo inside the circle */
+  transition: filter 0.2s;
+}
+
+/* If avatar is a real photo */
+.db-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+/* Camera icon overlay — shows on hover */
+.db-avatar-overlay {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.db-avatar-wrap:hover .db-avatar-overlay {
+  opacity: 1;
+}
+.db-avatar-wrap:hover .db-avatar {
+  filter: brightness(0.75);
+}
+
+/* Upload progress ring (optional nice touch) */
+.db-avatar-wrap.uploading .db-avatar-overlay {
+  opacity: 1;
+  font-size: 0.75rem;
+  color: #fff;
+  font-weight: 700;
+}
+
+/* ── Profile tab avatar section ───────────────────────────── */
+.db-avatar-section {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 16px 0 20px;
+  border-bottom: 1.5px solid #f0e8dd;
+  margin-bottom: 20px;
+}
+
+.db-avatar-preview {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: #1a8a6f;
+  color: #fff;
+  font-size: 2rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border: 3px solid #e8ddd0;
+  flex-shrink: 0;
+  cursor: pointer;
+  position: relative;
+}
+.db-avatar-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.db-avatar-preview-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.db-avatar-preview:hover .db-avatar-preview-overlay {
+  opacity: 1;
+}
+
+.db-avatar-info h4 {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: #2b2017;
+  margin-bottom: 4px;
+}
+.db-avatar-info p {
+  font-size: 0.78rem;
+  color: #9a8878;
+  margin-bottom: 10px;
+  line-height: 1.4;
+}
+.db-btn-upload-avatar {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 16px;
+  background: #f5ede0;
+  color: #4a3c30;
+  border: 1.5px solid #e0d5c8;
+  border-radius: 8px;
+  font-family: "DM Sans", sans-serif;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background 0.15s,
+    border-color 0.15s;
+}
+.db-btn-upload-avatar:hover {
+  background: #fdf3e3;
+  border-color: #c47e1a;
+  color: #c47e1a;
+}

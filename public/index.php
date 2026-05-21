@@ -60,10 +60,25 @@ $userName  = $_SESSION['name'] ?? 'Guest';
             </div>
             <?php if (isLoggedIn()): ?>
                 <div class="avatar-wrap" id="avatarToggle">
-                    <div class="avatar-circle"><?= strtoupper(substr($userName, 0, 1)) ?></div>
+                    <div class="avatar-circle">
+                        <?php if (!empty($_SESSION['avatar'])): ?>
+                            <img src="assets/uploads/avatars/<?= $_SESSION['avatar'] ?>" style="width:100%; height:100%; border-radius:50%; object-fit:cover;">
+                        <?php else: ?>
+                            <?= strtoupper(substr($_SESSION['name'], 0, 1)) ?>
+                        <?php endif; ?>
+                    </div>
                     <div class="avatar-dropdown" id="avatarDropdown">
                         <a href="<?= BASE_URL ?>dashboard.php">👤 Profile</a>
                         <!-- <a href="<?= BASE_URL ?>orders.php">📦 Orders</a> -->
+                        <hr>
+                        <?php if (isAdmin()): ?>
+                            <hr>
+                            <!-- Only admins see this link -->
+                            <a href="<?= BASE_URL ?>../admin/dashboard.php"
+                                style="color:#7c3aed; font-weight:700;">
+                                🛡️ Admin Panel
+                            </a>
+                        <?php endif; ?>
                         <hr>
                         <a href="<?= BASE_URL ?>logout.php" class="text-danger">Logout</a>
                     </div>
@@ -77,9 +92,9 @@ $userName  = $_SESSION['name'] ?? 'Guest';
     <!-- SECOND NAV BAR -->
     <nav class="secondary-nav">
         <div class="sec-nav-left">
-            <button class="hamburger-btn" id="sidebarToggle">
+            <!-- <button class="hamburger-btn" id="sidebarToggle">
                 <span></span><span></span><span></span>
-            </button>
+            </button> -->
             <a href="#" class="sec-nav-link active" data-tab="all">Categories</a>
             <!-- <a href="#" class="sec-nav-link" data-tab="for_you">For You</a>
             <a href="#" class="sec-nav-link" data-tab="spotlights">Community Spotlights</a> -->
@@ -194,6 +209,9 @@ $userName  = $_SESSION['name'] ?? 'Guest';
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="<?= BASE_URL ?>assets/js/home.js"></script>
     <script>
+        const BASE_URL = '<?= BASE_URL ?>';
+    </script>
+    <script>
         $(function() {
             // Poll notification count every 10 seconds
             function pollNotifications() {
@@ -218,7 +236,6 @@ $userName  = $_SESSION['name'] ?? 'Guest';
             setInterval(pollNotifications, 10000);
         });
     </script>
-
 </body>
 
 </html>
