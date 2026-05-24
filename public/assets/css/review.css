@@ -1,0 +1,464 @@
+/* ══════════════════════════════════════════════
+   REVIEWS SECTION (on product page)
+══════════════════════════════════════════════ */
+
+/* Header row */
+.rv-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.rv-header-left {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Average score summary */
+.rv-summary {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.rv-avg-score {
+  font-family: "DM Serif Display", serif;
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #2b2017;
+  line-height: 1;
+}
+
+.rv-avg-stars {
+  display: flex;
+  gap: 2px;
+}
+.rv-avg-stars .star {
+  font-size: 1.1rem;
+  color: #f5a623;
+}
+.rv-avg-stars .star.empty {
+  color: #e0d5c8;
+}
+
+.rv-count {
+  font-size: 0.85rem;
+  color: #9a8878;
+  font-weight: 500;
+}
+
+/* Write a review button */
+.rv-btn-write {
+  padding: 10px 20px;
+  background: #2b2017;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-family: "DM Sans", sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background 0.18s,
+    transform 0.15s;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.rv-btn-write:hover {
+  background: #4a3c30;
+  transform: translateY(-1px);
+}
+.rv-btn-write:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Rating breakdown bars */
+.rv-breakdown {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-bottom: 24px;
+}
+
+.rv-breakdown-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.82rem;
+}
+
+.rv-breakdown-label {
+  color: #6b5a48;
+  white-space: nowrap;
+  width: 40px;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.rv-breakdown-bar-wrap {
+  flex: 1;
+  height: 8px;
+  background: #f0e8dd;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.rv-breakdown-bar {
+  height: 100%;
+  background: #f5a623;
+  border-radius: 4px;
+  transition: width 0.5s ease;
+}
+
+.rv-breakdown-count {
+  color: #9a8878;
+  font-size: 0.75rem;
+  width: 20px;
+  text-align: left;
+  flex-shrink: 0;
+}
+
+/* ══════════════════════════════════════════════
+   REVIEW CARDS
+══════════════════════════════════════════════ */
+.reviews-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.review-item {
+  padding: 16px 18px;
+  background: #fdf6ee;
+  border-radius: 14px;
+  border: 1px solid #e8ddd0;
+  transition: box-shadow 0.18s;
+}
+.review-item:hover {
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.06);
+}
+
+.review-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.review-author-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.review-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #1a8a6f;
+  color: #fff;
+  font-size: 0.88rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.review-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.review-author {
+  font-weight: 700;
+  font-size: 0.92rem;
+  color: #2b2017;
+}
+.review-date {
+  font-size: 0.75rem;
+  color: #9a8878;
+}
+
+.review-stars {
+  display: flex;
+  gap: 1px;
+  margin-bottom: 6px;
+}
+.review-stars .star {
+  font-size: 0.95rem;
+  color: #f5a623;
+}
+.review-stars .star.empty {
+  color: #e0d5c8;
+}
+
+.review-text {
+  font-size: 0.88rem;
+  color: #4a3c30;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* Empty state */
+.rv-empty {
+  text-align: center;
+  padding: 32px 20px;
+  color: #9a8878;
+}
+.rv-empty-icon {
+  font-size: 2.2rem;
+  margin-bottom: 8px;
+}
+.rv-empty-title {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: #6b5a48;
+  margin-bottom: 4px;
+}
+.rv-empty-sub {
+  font-size: 0.82rem;
+}
+
+/* ══════════════════════════════════════════════
+   REVIEW MODAL
+══════════════════════════════════════════════ */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.modal-overlay.d-none {
+  display: none !important;
+}
+
+.rv-modal {
+  background: #fff;
+  border-radius: 20px;
+  padding: 28px;
+  width: 100%;
+  max-width: 460px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.18);
+  animation: modalIn 0.25s ease both;
+}
+
+@keyframes modalIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.rv-modal .modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.rv-modal .modal-header h2 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #2b2017;
+}
+
+.rv-modal-close {
+  background: none;
+  border: none;
+  font-size: 1.4rem;
+  color: #9a8878;
+  cursor: pointer;
+  line-height: 1;
+  padding: 2px 6px;
+  border-radius: 6px;
+  transition: background 0.15s;
+}
+.rv-modal-close:hover {
+  background: #f5ede0;
+  color: #2b2017;
+}
+
+.rv-modal-product-name {
+  font-size: 0.85rem;
+  color: #9a8878;
+  margin-bottom: 20px;
+  font-style: italic;
+}
+
+/* ── Star picker ──────────────────────────── */
+.rv-star-picker-label {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #4a3c30;
+  margin-bottom: 8px;
+}
+
+.rv-star-picker {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 6px;
+}
+
+.rv-star-pick {
+  font-size: 2.2rem;
+  color: #e0d5c8;
+  cursor: pointer;
+  transition:
+    color 0.15s,
+    transform 0.15s;
+  line-height: 1;
+  user-select: none;
+}
+.rv-star-pick:hover {
+  transform: scale(1.15);
+}
+.rv-star-pick.hovered,
+.rv-star-pick.selected {
+  color: #f5a623;
+}
+
+.rv-rating-label {
+  font-size: 0.8rem;
+  color: #9a8878;
+  margin-bottom: 16px;
+  min-height: 18px;
+  transition: color 0.15s;
+}
+.rv-rating-label.rated {
+  color: #f5a623;
+  font-weight: 600;
+}
+
+/* ── Comment field ────────────────────────── */
+.rv-field {
+  margin-bottom: 16px;
+}
+
+.rv-label {
+  display: block;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #4a3c30;
+  margin-bottom: 6px;
+}
+
+.rv-textarea {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1.5px solid #e0d5c8;
+  border-radius: 12px;
+  background: #fdf6ee;
+  font-family: "DM Sans", sans-serif;
+  font-size: 0.9rem;
+  color: #2b2017;
+  resize: vertical;
+  min-height: 100px;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
+}
+.rv-textarea::placeholder {
+  color: #b5a48a;
+}
+.rv-textarea:focus {
+  outline: none;
+  border-color: #c47e1a;
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(196, 126, 26, 0.1);
+}
+
+.rv-char-count {
+  text-align: right;
+  font-size: 0.73rem;
+  color: #b5a48a;
+  margin-top: 4px;
+}
+
+/* ── Modal footer ─────────────────────────── */
+.rv-modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.rv-btn-cancel {
+  padding: 10px 20px;
+  background: transparent;
+  color: #6b5a48;
+  border: 1.5px solid #e0d5c8;
+  border-radius: 10px;
+  font-family: "DM Sans", sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.rv-btn-cancel:hover {
+  background: #f5ede0;
+}
+
+.rv-btn-submit {
+  padding: 10px 24px;
+  background: #1a8a6f;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-family: "DM Sans", sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    background 0.18s,
+    transform 0.15s;
+}
+.rv-btn-submit:hover {
+  background: #147a61;
+  transform: translateY(-1px);
+}
+.rv-btn-submit:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ── Responsive ──────────────────────────────────────────── */
+@media (max-width: 480px) {
+  .rv-header {
+    flex-direction: column;
+  }
+  .rv-btn-write {
+    width: 100%;
+    text-align: center;
+  }
+  .rv-star-pick {
+    font-size: 1.8rem;
+  }
+  .rv-modal-footer {
+    flex-direction: column;
+  }
+  .rv-btn-cancel,
+  .rv-btn-submit {
+    width: 100%;
+    text-align: center;
+  }
+}

@@ -41,7 +41,9 @@ foreach ($users as &$u) {
     $u['initial']      = strtoupper(substr($u['name'], 0, 1));
     $u['member_since'] = date('M Y', strtotime($u['created_at']));
 
-    // Count their listings
+    // Count their listings 
+    // This is not efficient as it counts a every listing of each user one by one row by row
+    // This should be an future improvemnet. As it is okat now with minimum users but can be a bottleneck in future. 
     $ls = $pdo->prepare("SELECT COUNT(*) FROM products WHERE seller_id = ?");
     $ls->execute([$u['id']]);
     $u['listing_count'] = (int)$ls->fetchColumn();

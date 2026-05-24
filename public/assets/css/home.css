@@ -305,6 +305,7 @@
   inset: 0;
   background: rgba(0, 0, 0, 0.35);
   z-index: 149;
+  display: none; /* Change this to none */
 }
 
 /* ── MAIN CONTENT ──────────────────────────── */
@@ -634,8 +635,11 @@
   .left-sidebar.open {
     transform: translateX(0);
   }
-  .sidebar-overlay {
-    display: block !important;
+
+  /* ONLY show the overlay when the sidebar is open */
+  .left-sidebar.open + .sidebar-overlay,
+  .sidebar-overlay.active {
+    display: block;
   }
 }
 

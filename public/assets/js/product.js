@@ -67,11 +67,11 @@ $(function () {
     );
 
     // Reviews
-    renderReviews(p.reviews);
+    // renderReviews(p.reviews);
 
     // Show page, hide loader
-    $("#pageLoader").addClass("d-none");
-    $("#productDetail").removeClass("d-none");
+    // $("#pageLoader").addClass("d-none");
+    // $("#productDetail").removeClass("d-none");
 
     // Show Edit / Delete buttons only to owner or admin
     if (IS_LOGGED && (USER_ID === p.seller_id || USER_ROLE === "admin")) {
@@ -79,6 +79,27 @@ $(function () {
         `<a href="${BASE_URL}seller/edit-product.php?id=${p.id}"class="btn-edit-listing">✏️ Edit Listing</a>`,
       );
     }
+
+    // ── Hide buyer actions if the logged-in user is the seller ──
+    if (IS_LOGGED && USER_ID === p.seller_id) {
+      $("#btnMessage").hide();
+      $("#btnOffer").hide();
+
+      // Optional visual touch: replace them with an owner badge or notification
+      $(".seller-card").append(
+        '<div class="text-muted text-center mt-2 small" style="font-style: italic;">✨ You are the seller of this item</div>',
+      );
+    }
+    // Set seller ID for reviews system
+    window.SELLER_ID = parseInt(p.seller_id);
+    window.IS_OWN_LISTING = IS_LOGGED && USER_ID === parseInt(p.seller_id);
+
+    // Show page, hide loader — BEFORE calling loadReviews
+    $("#pageLoader").addClass("d-none");
+    $("#productDetail").removeClass("d-none");
+
+    // Load seller reviews — MUST be last
+    loadReviews();
   }
 
   // ── Thumbnails ─────────────────────────────────────────────
@@ -130,37 +151,37 @@ $(function () {
   }
 
   // ── Reviews ────────────────────────────────────────────────
-  function renderReviews(reviews) {
-    const list = $("#reviewsList");
-    if (!reviews || reviews.length === 0) {
-      list.html(
-        '<p class="text-muted" style="font-size:.9rem">No reviews yet. Be the first to review this product!</p>',
-      );
-      return;
-    }
+  // function renderReviews(reviews) {
+  //   const list = $("#reviewsList");
+  //   if (!reviews || reviews.length === 0) {
+  //     list.html(
+  //       '<p class="text-muted" style="font-size:.9rem">No reviews yet. Be the first to review this product!</p>',
+  //     );
+  //     return;
+  //   }
 
-    const html = reviews
-      .map((r) => {
-        const stars = "★".repeat(r.rating) + "☆".repeat(5 - r.rating);
-        const date = new Date(r.created_at).toLocaleDateString("en-ZA", {
-          day: "numeric",
-          month: "short",
-          year: "numeric",
-        });
-        return `
-        <div class="review-item">
-          <div class="review-header">
-            <span class="review-author">${esc(r.buyer_name)}</span>
-            <span class="review-date">${date}</span>
-          </div>
-          <div class="review-stars">${stars}</div>
-          <div class="review-text">${esc(r.comment || "")}</div>
-        </div>`;
-      })
-      .join("");
+  //   const html = reviews
+  //     .map((r) => {
+  //       const stars = "★".repeat(r.rating) + "☆".repeat(5 - r.rating);
+  //       const date = new Date(r.created_at).toLocaleDateString("en-ZA", {
+  //         day: "numeric",
+  //         month: "short",
+  //         year: "numeric",
+  //       });
+  //       return `
+  //       <div class="review-item">
+  //         <div class="review-header">
+  //           <span class="review-author">${esc(r.buyer_name)}</span>
+  //           <span class="review-date">${date}</span>
+  //         </div>
+  //         <div class="review-stars">${stars}</div>
+  //         <div class="review-text">${esc(r.comment || "")}</div>
+  //       </div>`;
+  //     })
+  //     .join("");
 
-    list.html(html);
-  }
+  //   list.html(html);
+  // }
 
   // ── Wishlist button ────────────────────────────────────────
   $("#btnWishlist").on("click", function () {

@@ -24,12 +24,12 @@ $userName  = $_SESSION['name'] ?? 'Guest';
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>assets/css/style.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>assets/css/home.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>assets/css/mobile.css">
 </head>
 
 <body class="home-page">
 
     <!-- NAV BAR -->
-
     <header class="top-navbar">
         <div class="nav-left">
             <a href="index.php" class="brand-logo">
@@ -92,9 +92,11 @@ $userName  = $_SESSION['name'] ?? 'Guest';
     <!-- SECOND NAV BAR -->
     <nav class="secondary-nav">
         <div class="sec-nav-left">
-            <!-- <button class="hamburger-btn" id="sidebarToggle">
-                <span></span><span></span><span></span>
-            </button> -->
+            <button class="hamburger-mobile" id="mobileMenuBtn" aria-label="Open menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
             <a href="#" class="sec-nav-link active" data-tab="all">Categories</a>
             <!-- <a href="#" class="sec-nav-link" data-tab="for_you">For You</a>
             <a href="#" class="sec-nav-link" data-tab="spotlights">Community Spotlights</a> -->
@@ -183,7 +185,7 @@ $userName  = $_SESSION['name'] ?? 'Guest';
                 <span class="product-count" id="productCount"></span>
             </div>
             <div class="product-grid" id="productGrid">
-                <!-- Loaded by JS -->
+                <!-- Loaded by home.js -->
                 <div class="loading-state">Loading products...</div>
             </div>
 
@@ -206,8 +208,18 @@ $userName  = $_SESSION['name'] ?? 'Guest';
         </div>
     </footer>
 
+    <script>
+        // Mobile nav data (read by mobile-nav.js)
+        window.MOB_LOGGED = <?= isLoggedIn() ? 'true' : 'false' ?>;
+        window.MOB_NAME = '<?= sanitize($_SESSION["name"] ?? "Guest") ?>';
+        window.MOB_ROLE = '<?= sanitize($_SESSION["role"] ?? "") ?>';
+        window.MOB_ADMIN = <?= isAdmin() ? 'true' : 'false' ?>;
+        window.MOB_AVATAR = '<?= !empty($_SESSION["avatar"]) ? BASE_URL . "uploads/avatars/" . $_SESSION["avatar"] : "" ?>';
+    </script>
+
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="<?= BASE_URL ?>assets/js/home.js"></script>
+    <script src="<?= BASE_URL ?>assets/js/mobile-nav.js"></script>
     <script>
         const BASE_URL = '<?= BASE_URL ?>';
     </script>

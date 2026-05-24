@@ -1,0 +1,750 @@
+/* ============================================================
+   mobile.css — Global Mobile Polish + Hamburger Menu
+   public/assets/css/mobile.css
+   Link this on EVERY page after your other CSS files
+   ============================================================ */
+
+/* ══════════════════════════════════════════════
+   HAMBURGER BUTTON (top navbar)
+   Add .hamburger-mobile to your top navbar on every page
+══════════════════════════════════════════════ */
+.hamburger-mobile {
+  display: none; /* hidden on desktop */
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 38px;
+  height: 38px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 8px;
+  transition: background 0.15s;
+  flex-shrink: 0;
+}
+.hamburger-mobile:hover {
+  background: rgba(0, 0, 0, 0.06);
+}
+
+.hamburger-mobile span {
+  display: block;
+  width: 22px;
+  height: 2.5px;
+  background: #2b2017;
+  border-radius: 3px;
+  transition:
+    transform 0.3s ease,
+    opacity 0.3s ease,
+    width 0.3s ease;
+  transform-origin: center;
+}
+
+/* X state when open */
+.hamburger-mobile.open span:nth-child(1) {
+  transform: translateY(7.5px) rotate(45deg);
+}
+.hamburger-mobile.open span:nth-child(2) {
+  opacity: 0;
+  width: 0;
+}
+.hamburger-mobile.open span:nth-child(3) {
+  transform: translateY(-7.5px) rotate(-45deg);
+}
+
+/* ══════════════════════════════════════════════
+   MOBILE SLIDE-IN NAV DRAWER
+   One shared component — works on all pages
+══════════════════════════════════════════════ */
+.mobile-nav-drawer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 280px;
+  height: 100vh;
+  background: #fff;
+  z-index: 400;
+  transform: translateX(-100%);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+  box-shadow: 4px 0 24px rgba(0, 0, 0, 0.12);
+  overflow-y: auto;
+}
+.mobile-nav-drawer.open {
+  transform: translateX(0);
+}
+
+/* Drawer overlay */
+.mobile-nav-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 399;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+.mobile-nav-overlay.open {
+  opacity: 1;
+  pointer-events: all;
+}
+
+/* Drawer header */
+.mobile-nav-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 20px 16px;
+  border-bottom: 1px solid #f0e8dd;
+}
+
+.mobile-nav-brand {
+  font-family: "DM Serif Display", serif;
+  font-size: 1.3rem;
+  color: #2b2017;
+  text-decoration: none;
+}
+
+.mobile-nav-close {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1.5px solid #e0d5c8;
+  background: none;
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #6b5a48;
+  transition: background 0.15s;
+}
+.mobile-nav-close:hover {
+  background: #f5ede0;
+}
+
+/* User info block */
+.mobile-nav-user {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 20px;
+  background: linear-gradient(135deg, #2b2017, #4a3c30);
+  color: #fff;
+  margin-bottom: 8px;
+}
+
+.mobile-nav-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #1a8a6f;
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  flex-shrink: 0;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+}
+.mobile-nav-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.mobile-nav-user-info {
+  flex: 1;
+  min-width: 0;
+}
+.mobile-nav-name {
+  font-weight: 700;
+  font-size: 0.92rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.mobile-nav-role {
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.65);
+  text-transform: capitalize;
+}
+
+/* Nav links */
+.mobile-nav-links {
+  flex: 1;
+  padding: 8px 0;
+}
+
+.mobile-nav-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 20px;
+  color: #4a3c30;
+  text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: 500;
+  border-left: 3px solid transparent;
+  transition:
+    background 0.15s,
+    border-color 0.15s,
+    color 0.15s;
+}
+.mobile-nav-link:hover,
+.mobile-nav-link.active {
+  background: #fdf3e3;
+  color: #c47e1a;
+  border-left-color: #c47e1a;
+}
+.mobile-nav-link .nav-icon {
+  font-size: 1.1rem;
+  width: 22px;
+  text-align: center;
+}
+
+.mobile-nav-divider {
+  height: 1px;
+  background: #f0e8dd;
+  margin: 8px 20px;
+}
+
+/* Admin link */
+.mobile-nav-link.admin-link {
+  color: #7c3aed;
+  font-weight: 700;
+}
+.mobile-nav-link.admin-link:hover {
+  background: #f0ecff;
+  border-left-color: #7c3aed;
+  color: #7c3aed;
+}
+
+/* Logout */
+.mobile-nav-link.logout-link {
+  color: #e03131;
+  font-weight: 600;
+}
+.mobile-nav-link.logout-link:hover {
+  background: #fff5f5;
+  border-left-color: #e03131;
+  color: #e03131;
+}
+
+/* Drawer footer */
+.mobile-nav-footer {
+  padding: 16px 20px;
+  border-top: 1px solid #f0e8dd;
+  font-size: 0.75rem;
+  color: #b5a48a;
+  text-align: center;
+}
+
+/* ══════════════════════════════════════════════
+   GLOBAL MOBILE FIXES (375px – 768px)
+══════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  /* Show hamburger, hide desktop nav items */
+  .hamburger-mobile {
+    display: flex !important;
+  }
+
+  /* Navbar adjustments */
+  .top-navbar {
+    padding: 10px 14px !important;
+    gap: 10px !important;
+  }
+
+  /* Hide search bar on small screens — use drawer instead */
+  .nav-center {
+    display: none !important;
+  }
+
+  /* Shrink nav icons */
+  .nav-icon-btn {
+    padding: 5px 6px !important;
+    font-size: 1.15rem !important;
+  }
+
+  /* Avatar circle smaller */
+  .avatar-circle {
+    width: 32px !important;
+    height: 32px !important;
+    font-size: 0.85rem !important;
+  }
+
+  /* Secondary nav — stack or scroll */
+  .secondary-nav {
+    padding: 8px 14px !important;
+    gap: 8px !important;
+    overflow-x: auto;
+    flex-wrap: nowrap !important;
+  }
+  .sec-nav-link {
+    font-size: 0.82rem !important;
+    white-space: nowrap;
+  }
+  .btn-list-item {
+    padding: 7px 14px !important;
+    font-size: 0.82rem !important;
+  }
+
+  /* Footer stacks */
+  .home-footer {
+    flex-direction: column !important;
+    text-align: center !important;
+    gap: 8px !important;
+    padding: 14px !important;
+  }
+  .footer-links {
+    justify-content: center !important;
+    gap: 14px !important;
+  }
+}
+
+/* ══════════════════════════════════════════════
+   HOME PAGE — mobile
+══════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  /* Hide permanent sidebar — use drawer instead */
+  .left-sidebar {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    height: 100% !important;
+    z-index: 150 !important;
+    transform: translateX(-100%) !important;
+    transition: transform 0.3s ease !important;
+    box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15) !important;
+    overflow-y: auto;
+  }
+  .left-sidebar.open {
+    transform: translateX(0) !important;
+  }
+
+  /* Full width content */
+  .home-layout {
+    display: block !important;
+  }
+  .main-content {
+    padding: 12px !important;
+  }
+
+  /* Product grid — 2 columns */
+  .product-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px !important;
+  }
+
+  /* Filter bar stacks */
+  .filter-bar {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 10px !important;
+    padding: 14px !important;
+  }
+  .filter-group {
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+  }
+  .filter-group label {
+    min-width: 70px;
+    margin: 0;
+  }
+  .filter-input,
+  .filter-select {
+    min-width: 0 !important;
+    flex: 1;
+  }
+  .btn-apply-filter {
+    width: 100%;
+  }
+
+  /* Carousel */
+  .carousel-item {
+    min-width: 100px !important;
+    height: 72px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .product-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 8px !important;
+  }
+  .product-title {
+    font-size: 0.82rem !important;
+  }
+  .product-price {
+    font-size: 0.9rem !important;
+  }
+}
+
+/* ══════════════════════════════════════════════
+   PRODUCT DETAIL PAGE — mobile
+══════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  .product-detail-wrap {
+    padding: 0 12px !important;
+    margin: 12px auto !important;
+  }
+
+  /* Stack columns vertically */
+  .pd-container {
+    grid-template-columns: 1fr !important;
+    padding: 16px !important;
+    gap: 16px !important;
+  }
+
+  /* Seller card full width */
+  .seller-card {
+    flex-direction: row !important;
+    flex-wrap: wrap !important;
+    gap: 10px !important;
+    padding: 16px !important;
+  }
+  .seller-card-avatar {
+    width: 50px !important;
+    height: 50px !important;
+  }
+  .btn-send-message,
+  .btn-make-offer {
+    flex: 1 !important;
+    min-width: 130px !important;
+    padding: 9px !important;
+  }
+
+  /* Price smaller */
+  .pd-price {
+    font-size: 1.7rem !important;
+  }
+
+  /* Thumbnails smaller */
+  .pd-thumb {
+    width: 54px !important;
+    height: 44px !important;
+  }
+
+  /* Reviews section */
+  .rv-header {
+    flex-direction: column !important;
+  }
+  .rv-btn-write {
+    width: 100% !important;
+    text-align: center;
+  }
+}
+
+/* ══════════════════════════════════════════════
+   ADD PRODUCT / EDIT PRODUCT — mobile
+══════════════════════════════════════════════ */
+@media (max-width: 700px) {
+  .ap-container {
+    grid-template-columns: 1fr !important;
+    padding: 0 12px !important;
+    margin: 14px auto !important;
+  }
+  .ap-photo-area {
+    aspect-ratio: 16/9 !important;
+  }
+  .ap-btn-row {
+    flex-direction: column !important;
+  }
+  .ap-btn-draft,
+  .ap-btn-submit {
+    width: 100% !important;
+    text-align: center;
+  }
+  .ap-row {
+    flex-direction: column !important;
+    gap: 0 !important;
+  }
+  .ap-negotiable-wrap {
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+  }
+}
+
+/* ══════════════════════════════════════════════
+   DASHBOARD — mobile
+══════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  .db-hero {
+    border-radius: 0 !important;
+    padding: 20px 16px !important;
+  }
+  .db-hero-inner {
+    flex-direction: column !important;
+    gap: 14px !important;
+  }
+
+  /* Stats wrap scrolls horizontally */
+  .db-hero-stats {
+    width: 100% !important;
+    overflow-x: auto;
+    justify-content: flex-start !important;
+    padding: 12px 16px !important;
+  }
+  .db-stat {
+    padding: 0 14px !important;
+  }
+  .db-stat-value {
+    font-size: 1.2rem !important;
+  }
+
+  /* Tabs scroll */
+  .db-tabs {
+    overflow-x: auto;
+    gap: 2px !important;
+  }
+  .db-tab {
+    font-size: 0.8rem !important;
+    padding: 9px 10px !important;
+    white-space: nowrap;
+  }
+
+  /* Listings grid — 2 columns */
+  .db-listings-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px !important;
+  }
+
+  /* Orders list */
+  .db-order-card {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 8px !important;
+  }
+  .db-order-right {
+    align-items: flex-start !important;
+    flex-direction: row !important;
+    gap: 10px !important;
+  }
+
+  /* Profile grid — single column */
+  .db-profile-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .db-account-card {
+    grid-column: 1 !important;
+  }
+
+  .db-page {
+    padding: 0 12px 30px !important;
+  }
+}
+
+@media (max-width: 400px) {
+  .db-listings-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* ══════════════════════════════════════════════
+   MESSAGES PAGE — mobile
+══════════════════════════════════════════════ */
+@media (max-width: 640px) {
+  .msg-layout {
+    margin: 8px !important;
+    border-radius: 14px !important;
+    height: calc(100vh - 80px) !important;
+  }
+
+  /* Sidebar collapses to icon-only */
+  .msg-sidebar {
+    width: 64px !important;
+    min-width: 64px !important;
+  }
+  .msg-sidebar-header {
+    display: none !important;
+  }
+  .msg-conv-info,
+  .msg-conv-meta {
+    display: none !important;
+  }
+  .msg-conv-item {
+    padding: 10px 8px !important;
+    justify-content: center !important;
+  }
+  .msg-conv-avatar {
+    width: 40px !important;
+    height: 40px !important;
+  }
+
+  /* Full width chat */
+  .msg-chat-header {
+    padding: 12px 14px !important;
+  }
+  .msg-body {
+    padding: 14px 12px 8px !important;
+  }
+  .msg-input-wrap {
+    padding: 10px 12px !important;
+  }
+  .msg-send-btn {
+    padding: 9px 14px !important;
+  }
+
+  /* Bubbles narrower */
+  .msg-bubble-wrap {
+    max-width: 82% !important;
+  }
+}
+
+/* ══════════════════════════════════════════════
+   LOGIN PAGE — mobile
+══════════════════════════════════════════════ */
+@media (max-width: 480px) {
+  .auth-card {
+    padding: 28px 20px !important;
+    border-radius: 14px !important;
+    margin: 20px 12px !important;
+  }
+  .brand-header h1 {
+    font-size: 1.6rem !important;
+  }
+  .social-row {
+    gap: 12px !important;
+  }
+  .social-btn {
+    width: 46px !important;
+    height: 46px !important;
+  }
+}
+
+/* ══════════════════════════════════════════════
+   ADMIN PAGES — mobile
+══════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  /* Hide sidebar — admin uses drawer too */
+  .sidebar {
+    display: none !important;
+  }
+
+  /* Show mobile hamburger in admin topbar */
+  .admin-topbar {
+    padding: 14px 16px !important;
+    position: relative;
+  }
+
+  .admin-page-title {
+    font-size: 1.2rem !important;
+  }
+
+  /* Stats grid — 2 cols */
+  .adm-stats-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px !important;
+  }
+  .adm-stat-value {
+    font-size: 1.4rem !important;
+  }
+
+  /* Activity cards stack */
+  .adm-activity-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Tables — hide less important columns */
+  .admin-table th:nth-child(3),
+  .admin-table td:nth-child(3) {
+    display: none !important;
+  }
+
+  .admin-content {
+    padding: 14px !important;
+  }
+
+  /* Category accordion */
+  .cat-parent-header {
+    padding: 12px 14px !important;
+  }
+  .cat-child-row {
+    padding: 10px 14px 10px 28px !important;
+  }
+
+  /* Modals full width */
+  .modal-box {
+    padding: 20px 16px !important;
+    border-radius: 16px !important;
+  }
+}
+
+/* ══════════════════════════════════════════════
+   REVIEWS MODAL — mobile
+══════════════════════════════════════════════ */
+@media (max-width: 480px) {
+  .rv-modal {
+    padding: 20px 16px !important;
+  }
+  .rv-star-pick {
+    font-size: 1.9rem !important;
+  }
+  .rv-modal-footer {
+    flex-direction: column !important;
+  }
+  .rv-btn-cancel,
+  .rv-btn-submit {
+    width: 100% !important;
+    text-align: center;
+  }
+}
+
+/* ══════════════════════════════════════════════
+   TOUCH IMPROVEMENTS
+══════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  /* Bigger tap targets */
+  .btn-primary-dark,
+  .btn-wishlist,
+  .btn-send-message,
+  .btn-make-offer,
+  .db-btn-primary,
+  .ap-btn-submit,
+  .rv-btn-submit,
+  .msg-send-btn {
+    min-height: 46px !important;
+  }
+
+  /* Inputs easier to tap */
+  .form-control,
+  .form-select,
+  .ap-input,
+  .db-input,
+  .msg-input {
+    min-height: 46px !important;
+    font-size: 16px !important; /* prevents iOS zoom on focus */
+  }
+
+  /* Remove hover effects on touch */
+  .product-card:hover {
+    transform: none !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06) !important;
+  }
+  .db-listing-card:hover {
+    transform: none !important;
+  }
+}
+
+/* ══════════════════════════════════════════════
+   UTILITY
+══════════════════════════════════════════════ */
+/* Smooth scrolling on mobile */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Prevent horizontal scroll */
+body {
+  overflow-x: hidden;
+}
+
+/* Better tap highlight */
+* {
+  -webkit-tap-highlight-color: rgba(196, 126, 26, 0.15);
+}

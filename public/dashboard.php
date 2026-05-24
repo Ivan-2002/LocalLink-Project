@@ -19,6 +19,7 @@ requireLogin();
     <link rel="stylesheet" href="<?= BASE_URL ?>assets/css/style.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>assets/css/home.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>assets/css/dashboard.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>assets/css/mobile.css">
 </head>
 
 <body class="home-page">
@@ -28,6 +29,11 @@ requireLogin();
         <div class="nav-left">
             <a href="<?= BASE_URL ?>index.php" class="brand-logo">
                 LocalLink <span class="logo-icon">🛍️</span>
+                <button class="hamburger-mobile" id="mobileMenuBtn" aria-label="Open menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
             </a>
         </div>
         <div class="nav-center">
@@ -296,11 +302,21 @@ requireLogin();
         </div>
     </footer>
 
+    <script>
+        // Mobile nav data (read by mobile-nav.js)
+        window.MOB_LOGGED = <?= isLoggedIn() ? 'true' : 'false' ?>;
+        window.MOB_NAME = '<?= sanitize($_SESSION["name"] ?? "Guest") ?>';
+        window.MOB_ROLE = '<?= sanitize($_SESSION["role"] ?? "") ?>';
+        window.MOB_ADMIN = <?= isAdmin() ? 'true' : 'false' ?>;
+        window.MOB_AVATAR = '<?= !empty($_SESSION["avatar"]) ? BASE_URL . "uploads/avatars/" . $_SESSION["avatar"] : "" ?>';
+    </script>
+
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script>
         const BASE_URL = '<?= BASE_URL ?>';
     </script>
     <script src="<?= BASE_URL ?>assets/js/dashboard.js"></script>
+    <script src="<?= BASE_URL ?>assets/js/mobile-nav.js"></script>
     <script>
         $(function() {
             // Poll notification count every 10 seconds

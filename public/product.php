@@ -19,6 +19,8 @@ if (!$productId) redirect(BASE_URL . 'index.php');
     <link rel="stylesheet" href="<?= BASE_URL ?>assets/css/style.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>assets/css/home.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>assets/css/product.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>assets/css/review.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>assets/css/mobile.css">
 </head>
 
 <body class="home-page">
@@ -78,7 +80,11 @@ if (!$productId) redirect(BASE_URL . 'index.php');
     <nav class="secondary-nav">
         <div class="sec-nav-left">
             <a href="index.php" class="sec-nav-link">← Back</a>
-            <span class="sec-nav-link" id="breadcrumbCat" style="color:#9a8878; cursor:default"></span>
+            <button class="hamburger-mobile" id="mobileMenuBtn" aria-label="Open menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
         </div>
         <div class="sec-nav-right">
             <?php if (isLoggedIn()): ?>
@@ -103,7 +109,7 @@ if (!$productId) redirect(BASE_URL . 'index.php');
                 </div>
                 <!-- Thumbnail strip -->
                 <div class="pd-thumbnails" id="thumbnailStrip">
-                    <!-- Populated by JS — for now shows main image repeated as placeholders -->
+                    <!-- Populated by product.js -->
                 </div>
             </div>
 
@@ -168,9 +174,81 @@ if (!$productId) redirect(BASE_URL . 'index.php');
 
         <!-- REVIEWS SECTION -->
         <div class="pd-reviews-wrap">
-            <h2 class="pd-section-title">Reviews</h2>
+
+            <!-- Header row -->
+            <div class="rv-header">
+                <div class="rv-header-left">
+                    <h2 class="pd-section-title">Seller Reviews</h2>
+                    <!-- Star summary -->
+                    <div class="rv-summary" id="rvSummary">
+                        <span class="rv-avg-score" id="rvAvgScore">—</span>
+                        <div class="rv-avg-stars" id="rvAvgStars"></div>
+                        <span class="rv-count" id="rvCount"></span>
+                    </div>
+                </div>
+
+                <!-- Leave a review button — shown to logged-in users who haven't reviewed yet -->
+                <button class="rv-btn-write" id="openReviewModal">
+                    ✍️ Write a Review
+                </button>
+            </div>
+
+            <!-- Rating breakdown bars -->
+            <div class="rv-breakdown" id="rvBreakdown"></div>
+
+            <!-- Reviews list -->
             <div id="reviewsList" class="reviews-list">
-                <p class="text-muted">No reviews yet.</p>
+                <p class="text-muted" style="font-size:.9rem">Loading reviews...</p>
+            </div>
+
+        </div>
+
+        <div class="modal-overlay d-none" id="reviewModal">
+            <div class="modal-box rv-modal">
+
+                <div class="modal-header">
+                    <h2>Write a Review</h2>
+                    <button class="rv-modal-close" id="closeReviewModal">&times;</button>
+                </div>
+
+                <p class="rv-modal-product-name" id="reviewProductName"></p>
+
+                <div id="reviewAlert" class="alert d-none mb-3"></div>
+
+                <form id="reviewForm">
+
+                    <!-- Interactive star picker -->
+                    <div class="rv-star-picker-label">Your Rating <span class="text-danger">*</span></div>
+                    <div class="rv-star-picker" id="starPicker">
+                        <span class="rv-star-pick" data-value="1">★</span>
+                        <span class="rv-star-pick" data-value="2">★</span>
+                        <span class="rv-star-pick" data-value="3">★</span>
+                        <span class="rv-star-pick" data-value="4">★</span>
+                        <span class="rv-star-pick" data-value="5">★</span>
+                    </div>
+                    <div class="rv-rating-label" id="ratingLabel">Click to rate</div>
+                    <input type="hidden" name="rating" id="ratingInput" value="0">
+
+                    <!-- Comment -->
+                    <div class="rv-field">
+                        <label class="rv-label">
+                            Your Review <span class="text-muted" style="font-weight:400">(optional)</span>
+                        </label>
+                        <textarea name="comment" id="reviewComment"
+                            class="rv-textarea"
+                            placeholder="Share your experience with this product or seller..."
+                            rows="4" maxlength="500"></textarea>
+                        <div class="rv-char-count"><span id="charCount">0</span> / 500</div>
+                    </div>
+
+                    <div class="rv-modal-footer">
+                        <button type="button" class="rv-btn-cancel" id="closeReviewModal2">Cancel</button>
+                        <button type="submit" class="rv-btn-submit" id="submitReviewBtn">
+                            Submit Review
+                        </button>
+                    </div>
+
+                </form>
             </div>
         </div>
 
@@ -196,15 +274,30 @@ if (!$productId) redirect(BASE_URL . 'index.php');
         </div>
     </footer>
 
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script>
         const PRODUCT_ID = <?= $productId ?>;
         const BASE_URL = '<?= BASE_URL ?>';
         const IS_LOGGED = <?= isLoggedIn() ? 'true' : 'false' ?>;
-        // const USER_ROLE = '<?= getRole() ?>';
+        const USER_ROLE = '<?= getRole() ?>';
         const USER_ID = <?= $_SESSION['user_id'] ?? 0 ?>;
+        const SELLER_ID = 0; // will be set by JS after product loads
+        const IS_OWN_LISTING = false; // will be set by JS after product loads
     </script>
+
+    <script>
+        // Mobile nav data (read by mobile-nav.js)
+        window.MOB_LOGGED = <?= isLoggedIn() ? 'true' : 'false' ?>;
+        window.MOB_NAME = '<?= sanitize($_SESSION["name"] ?? "Guest") ?>';
+        window.MOB_ROLE = '<?= sanitize($_SESSION["role"] ?? "") ?>';
+        window.MOB_ADMIN = <?= isAdmin() ? 'true' : 'false' ?>;
+        window.MOB_AVATAR = '<?= !empty($_SESSION["avatar"]) ? BASE_URL . "uploads/avatars/" . $_SESSION["avatar"] : "" ?>';
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="<?= BASE_URL ?>assets/js/product.js"></script>
+    <script src="<?= BASE_URL ?>assets/js/reviews.js"></script>
+    <script src="<?= BASE_URL ?>assets/js/mobile-nav.js"></script>
+
     <script>
         $(function() {
             // Poll notification count every 10 seconds

@@ -12,12 +12,13 @@ requireAdmin();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>User Management — TownMarket Admin</title>
+    <title>User Management — LocalLink Admin</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/css/admin.css">
     <link rel="stylesheet" href="assets/css/users.css">
+    <link rel="stylesheet" href="assets/css/admin-mobile.css">
 </head>
 
 <body>
@@ -31,6 +32,7 @@ requireAdmin();
                 <a href="users.php" class="active">👤 Users</a>
                 <a href="products.php">📦 Products</a>
                 <a href="categories.php">🗂️ Categories</a>
+                <a href="<?= BASE_URL ?>index.php">LocalLink</a>
             </nav>
             <div class="sidebar-footer">
                 <a href="<?= BASE_URL ?>logout.php" class="logout-link">→ Log out</a>
