@@ -7,7 +7,7 @@
 .msg-layout {
   display: flex;
   height: calc(100vh - 60px - 52px); /* viewport - navbar - footer */
-  max-width: 960px;
+  max-width: 100%;
   margin: 20px auto;
   background: #fff;
   border-radius: 20px;
@@ -420,29 +420,243 @@
 /* ══════════════════════════════════════════════
    RESPONSIVE
 ══════════════════════════════════════════════ */
-@media (max-width: 640px) {
+
+/* Tablet (768px and below) */
+@media (max-width: 768px) {
   .msg-layout {
-    margin: 10px;
+    margin: 12px;
     border-radius: 14px;
     height: calc(100vh - 70px - 60px);
+    flex-direction: column;
+    position: relative;
   }
+
+  /* SIDEBAR — hidden by default on mobile, shown when .show-contacts is active */
   .msg-sidebar {
-    width: 80px;
-    min-width: 80px;
+    width: 100%;
+    min-width: 100%;
+    border-right: none;
+    border-bottom: 1.5px solid #e8ddd0;
+    flex-direction: column;
+    height: 100%;
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: #fdf6ee;
+    z-index: 10;
+    overflow: hidden;
   }
+
+  /* Show sidebar when .show-contacts is active on msg-layout */
+  .msg-layout.show-contacts .msg-sidebar {
+    display: flex;
+  }
+
+  /* Hide chat when .show-contacts is active */
+  .msg-layout.show-contacts .msg-chat {
+    display: none;
+  }
+
   .msg-sidebar-header {
-    display: none;
+    display: block;
+    padding: 18px 16px 12px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: #9a8878;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    border-bottom: 1px solid #e8ddd0;
+    flex-shrink: 0;
   }
-  .msg-conv-info,
+
+  .msg-conv-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    overflow-y: auto;
+    padding: 0;
+    flex: 1;
+  }
+
+  .msg-conv-item {
+    flex-shrink: 0;
+    width: 100%;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 12px 14px;
+    border-bottom: 1px solid #f0e8dd;
+    border-right: none;
+    gap: 10px;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+
+  .msg-conv-item:hover {
+    background: #fdf3e3;
+  }
+
+  .msg-conv-item.active {
+    background: #e8f4f1;
+    border-left: 3px solid #1a8a6f;
+  }
+
+  .msg-conv-info {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-width: 0;
+  }
+
   .msg-conv-meta {
-    display: none;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 4px;
   }
+
   .msg-conv-avatar {
     width: 44px;
     height: 44px;
+    flex-shrink: 0;
   }
+
+  .msg-chat {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    position: relative;
+  }
+
+  .msg-body {
+    padding: 16px 12px 8px;
+  }
+
+  .msg-bubble-wrap {
+    max-width: 85%;
+  }
+
+  .msg-input-wrap {
+    padding: 12px 12px;
+    gap: 6px;
+  }
+
+  .msg-input {
+    font-size: 0.85rem;
+    padding: 10px 14px;
+  }
+
+  .msg-send-btn {
+    padding: 8px 16px;
+    font-size: 0.85rem;
+  }
+
+  .msg-chat-header {
+    padding: 14px 16px;
+    gap: 8px;
+  }
+
+  .msg-partner-name {
+    font-size: 0.95rem;
+  }
+
+  .msg-partner-avatar {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+/* Mobile (480px and below) */
+@media (max-width: 480px) {
+  .msg-layout {
+    margin: 8px;
+    border-radius: 10px;
+    height: calc(100vh - 70px - 60px);
+  }
+
+  .msg-sidebar-header {
+    padding: 16px 14px 10px;
+    font-size: 0.78rem;
+  }
+
   .msg-conv-item {
-    justify-content: center;
-    padding: 10px 6px;
+    padding: 10px 12px;
+    gap: 8px;
+  }
+
+  .msg-conv-avatar {
+    width: 40px;
+    height: 40px;
+    font-size: 0.85rem;
+  }
+
+  .msg-conv-name {
+    font-size: 0.82rem;
+  }
+
+  .msg-conv-preview {
+    font-size: 0.72rem;
+  }
+
+  .msg-conv-time {
+    font-size: 0.65rem;
+  }
+
+  .msg-body {
+    padding: 12px 10px 6px;
+    gap: 3px;
+  }
+
+  .msg-bubble-wrap {
+    max-width: 88%;
+  }
+
+  .msg-bubble {
+    padding: 9px 12px;
+    font-size: 0.85rem;
+  }
+
+  .msg-input-wrap {
+    padding: 10px 10px;
+    gap: 4px;
+  }
+
+  .msg-input {
+    font-size: 0.8rem;
+    padding: 9px 12px;
+  }
+
+  .msg-send-btn {
+    padding: 7px 14px;
+    font-size: 0.8rem;
+  }
+
+  .msg-attach-btn {
+    font-size: 1rem;
+  }
+
+  .msg-chat-header {
+    padding: 12px 14px;
+    gap: 6px;
+  }
+
+  .msg-partner-avatar {
+    width: 36px;
+    height: 36px;
+    font-size: 0.85rem;
+  }
+
+  .msg-partner-name {
+    font-size: 0.9rem;
+  }
+
+  .msg-close-btn {
+    width: 28px;
+    height: 28px;
+    font-size: 0.8rem;
   }
 }

@@ -89,6 +89,11 @@ $(function () {
     $("#msgEmptyState").addClass("d-none");
     $("#msgChatInner").removeClass("d-none");
 
+    // On mobile, hide the contacts view to show the chat
+    if ($(window).width() <= 768) {
+      $(".msg-layout").removeClass("show-contacts");
+    }
+
     // Load messages
     loadMessages(partnerId);
 
@@ -214,9 +219,18 @@ $(function () {
   $("#closeChatBtn").on("click", function () {
     activePartnerId = 0;
     clearInterval(pollInterval);
-    $("#msgChatInner").addClass("d-none");
-    $("#msgEmptyState").removeClass("d-none");
-    $(".msg-conv-item").removeClass("active");
+
+    if ($(window).width() <= 768) {
+      // On mobile: just toggle back to contacts view (sidebar will show via CSS)
+      // Don't manipulate the chat elements - let CSS handle the display
+      $(".msg-layout").addClass("show-contacts");
+      $(".msg-conv-item").removeClass("active");
+    } else {
+      // On desktop: show the empty state
+      $("#msgChatInner").addClass("d-none");
+      $("#msgEmptyState").removeClass("d-none");
+      $(".msg-conv-item").removeClass("active");
+    }
   });
 
   // ══════════════════════════════════════════════
@@ -253,6 +267,11 @@ $(function () {
   loadConversations();
   pollNotifications();
   setInterval(pollNotifications, 10000); // check every 10s
+
+  // On mobile, show contacts list by default on page load
+  if ($(window).width() <= 768) {
+    $(".msg-layout").addClass("show-contacts");
+  }
 
   // Helper
   function esc(str) {

@@ -243,6 +243,39 @@ $(function () {
     );
   }
 
-  // ── Initial load ───────────────────────────────────────────
+  // ── Mobile Category Hamburger Menu ─────────────────────────
+  function toggleCategoryMenu() {
+    const sidebar = $("#leftCatSidebar");
+    const overlay = $("#mobileCatOverlay");
+    const isOpen = sidebar.hasClass("cat-sidebar-open");
+
+    if (isOpen) {
+      sidebar.removeClass("cat-sidebar-open").removeClass("open");
+      overlay.removeClass("cat-overlay-open");
+      $("body").css("overflow", "");
+    } else {
+      sidebar.addClass("cat-sidebar-open").addClass("open");
+      overlay.addClass("cat-overlay-open");
+      $("body").css("overflow", "hidden"); // Stop background scrolling
+    }
+  }
+
+  // Open/Close on hamburger click
+  $("#catMenuToggle").on("click", function (e) {
+    e.stopPropagation();
+    toggleCategoryMenu();
+  });
+
+  // Close when clicking on the dimmed background area
+  $("#mobileCatOverlay").on("click", toggleCategoryMenu);
+
+  // Helper helper function to close sidebar smoothly
+  function closeSidebar() {
+    $("#leftCatSidebar").removeClass("cat-sidebar-open").removeClass("open");
+    $("#mobileCatOverlay").removeClass("cat-overlay-open");
+    $("body").css("overflow", "");
+  }
+
+  // ── Initial Boot ──────────────────────────────────────────
   loadProducts();
 });

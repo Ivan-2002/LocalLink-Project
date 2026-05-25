@@ -37,6 +37,9 @@ $(function () {
     <a href="${baseUrl}seller/add-product.php" class="mobile-nav-link">
       <span class="nav-icon">➕</span> List an Item
     </a>
+    <a href="${baseUrl}seller/add-product.php" class="mobile-nav-link">
+      <span class="nav-icon">📦</span> Categories
+    </a>
     <div class="mobile-nav-divider"></div>
     ${
       isAdmin

@@ -280,8 +280,7 @@ if (!$productId) redirect(BASE_URL . 'index.php');
         const IS_LOGGED = <?= isLoggedIn() ? 'true' : 'false' ?>;
         const USER_ROLE = '<?= getRole() ?>';
         const USER_ID = <?= $_SESSION['user_id'] ?? 0 ?>;
-        const SELLER_ID = 0; // will be set by JS after product loads
-        const IS_OWN_LISTING = false; // will be set by JS after product loads
+        // SELLER_ID and IS_OWN_LISTING will be set by JS after product loads
     </script>
 
     <script>

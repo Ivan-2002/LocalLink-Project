@@ -194,7 +194,7 @@
   background: none;
   border: none;
   cursor: pointer;
-  display: flex;
+  display: none;
   flex-direction: column;
   gap: 5px;
   padding: 4px;
@@ -622,6 +622,11 @@
    RESPONSIVE
 ══════════════════════════════════════════════ */
 @media (max-width: 991px) {
+  /* Show hamburger button on tablets and below */
+  .hamburger-btn {
+    display: flex;
+  }
+
   /* Sidebar slides in from left on mobile */
   .left-sidebar {
     position: fixed;
@@ -696,4 +701,50 @@
   width: 100%;
   height: 100%;
   object-fit: cover; /* This prevents the photo from looking stretched */
+}
+
+/* Base styles for the new overlay */
+.mobile-cat-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 998;
+  display: none; /* Hidden by default */
+}
+
+/* Show overlay when open class is added (works at all breakpoints) */
+.mobile-cat-overlay.cat-overlay-open {
+  display: block !important;
+}
+
+@media (max-width: 991px) {
+  /* Override the default layout sidebar behavior for mobile */
+  .mobile-cat-sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 280px; /* 1. Ensure it has an explicit mobile width */
+    background: #fff !important; /* 2. Force solid white background over the dark overlay */
+    overflow-y: auto; /* 3. Allow scrolling if the category list is long */
+    z-index: 10000; /* Make sure it sits above EVERYTHING */
+    transform: translateX(-100%);
+    transition: transform 0.3s ease-in-out;
+    box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
+  }
+
+  /* Update the overlay z-index slightly beneath the sidebar */
+  .mobile-cat-overlay {
+    z-index: 9999;
+  }
+
+  /* Target state: When the unique open class is applied */
+  .mobile-cat-sidebar.cat-sidebar-open {
+    transform: translateX(0);
+  }
+
+  /* Show the specific overlay when open */
+  .mobile-cat-sidebar.cat-sidebar-open + .mobile-cat-overlay {
+    display: block !important;
+  }
 }

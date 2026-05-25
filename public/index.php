@@ -92,13 +92,13 @@ $userName  = $_SESSION['name'] ?? 'Guest';
     <!-- SECOND NAV BAR -->
     <nav class="secondary-nav">
         <div class="sec-nav-left">
-            <button class="hamburger-mobile" id="mobileMenuBtn" aria-label="Open menu">
+            <button class="hamburger-btn" id="catMenuToggle">
                 <span></span>
                 <span></span>
                 <span></span>
             </button>
-            <a href="#" class="sec-nav-link active" data-tab="all">Categories</a>
-            <!-- <a href="#" class="sec-nav-link" data-tab="for_you">For You</a>
+            <a href="#" class="sec-nav-link active" data-tab="all">For You</a>
+            <!-- <a href="#" class="sec-nav-link" data-tab="for_you">Categories</a>
             <a href="#" class="sec-nav-link" data-tab="spotlights">Community Spotlights</a> -->
         </div>
         <div class="sec-nav-right">
@@ -106,13 +106,16 @@ $userName  = $_SESSION['name'] ?? 'Guest';
                 <a href="<?= BASE_URL ?>seller/add-product.php" class="btn-list-item">+ List a New Item</a>
             <?php endif; ?>
         </div>
+        <aside class="left-sidebar" id="leftSidebar">
+        </aside>
+
+        <div class="sidebar-overlay" id="sidebarOverlay" style="display: none;"></div>
     </nav>
 
     <!-- MAIN LAYOUT -->
     <div class="home-layout">
-
         <!-- SIDE BAR -->
-        <aside class="left-sidebar" id="leftSidebar">
+        <aside class="left-sidebar mobile-cat-sidebar" id="leftCatSidebar">
             <div class="sidebar-user">
                 <p class="sidebar-hello">Hello <?= isLoggedIn() ? 'User' : 'Guest' ?></p>
                 <p class="sidebar-username"><?= sanitize($userName) ?></p>
@@ -132,9 +135,10 @@ $userName  = $_SESSION['name'] ?? 'Guest';
                 <?php endforeach; ?>
             </ul>
         </aside>
+        <div class="mobile-cat-overlay" id="mobileCatOverlay"></div>
 
         <!-- ── SIDEBAR OVERLAY (mobile) ─────────────── -->
-        <div class="sidebar-overlay d-none" id="sidebarOverlay"></div>
+        <!-- <div class="sidebar-overlay d-none" id="sidebarOverlay"></div> -->
 
         <!-- MAIN CONTENT -->
         <div class="main-content">
