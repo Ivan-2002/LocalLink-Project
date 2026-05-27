@@ -46,6 +46,11 @@ requireAdmin();
             <div class="admin-topbar">
                 <h1 class="admin-page-title">User Management</h1>
                 <div class="topbar-right">
+                    <button class="admin-hamburger" id="adminMenuToggle">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </button>
                     <button class="topbar-icon">🔍</button>
                     <button class="topbar-icon">🔔</button>
                     <div class="topbar-user">
@@ -223,6 +228,7 @@ requireAdmin();
     </div>
 
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="assets/js/admin-mobile.js"></script>
     <script>
         const BASE_URL = '<?= BASE_URL ?>';
         const ADMIN_API = BASE_URL + '../api/admin/';

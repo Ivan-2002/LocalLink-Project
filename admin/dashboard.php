@@ -24,7 +24,7 @@ requireAdmin();
 
         <!-- ── SIDEBAR ─────────────────────────────── -->
         <aside class="sidebar">
-            <div class="sidebar-brand">LocalLink <span>🛍️</span></div>
+            <div class="sidebar-brand" id="side-nav-a">LocalLink <span>🛍️</span></div>
             <nav>
                 <a href="dashboard.php" class="active">🏠 DashBoard</a>
                 <a href="users.php">👤 Users</a>
@@ -44,6 +44,11 @@ requireAdmin();
             <div class="admin-topbar">
                 <h1 class="admin-page-title">Admin Dashboard</h1>
                 <div class="topbar-right">
+                    <button class="admin-hamburger" id="adminMenuToggle" aria-label="Toggle navigation">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </button>
                     <button class="topbar-icon">🔍</button>
                     <button class="topbar-icon">🔔</button>
                     <div class="topbar-user">
@@ -91,6 +96,7 @@ requireAdmin();
     </div>
 
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="<?= BASE_URL  ?>../admin/assets/js/admin-mobile.js"></script>
     <script>
         const BASE_URL = '<?= BASE_URL ?>';
         $(function() {

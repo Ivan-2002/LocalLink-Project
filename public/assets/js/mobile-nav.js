@@ -18,67 +18,6 @@ $(function () {
   const isAdmin = window.MOB_ADMIN || false;
   const baseUrl = window.BASE_URL || "/";
 
-  const avatarHtml = avatarUrl
-    ? `<img src="${avatarUrl}" alt="${userInitial}">`
-    : userInitial;
-
-  // Build nav links depending on login state
-  // <a href="${baseUrl}dashboard.php" class="mobile-nav-link">
-  //   <span class="nav-icon">👤</span> My Dashboard
-  // </a>
-  // <a href="${baseUrl}messages.php"  class="mobile-nav-link">
-  //   <span class="nav-icon">💬</span> Messages
-  // </a>
-  const authLinks = isLoggedIn
-    ? `
-    <a href="${baseUrl}index.php"     class="mobile-nav-link">
-      <span class="nav-icon">🏠</span> Home
-    </a>
-    <a href="${baseUrl}seller/add-product.php" class="mobile-nav-link">
-      <span class="nav-icon">➕</span> List an Item
-    </a>
-    <a href="${baseUrl}seller/add-product.php" class="mobile-nav-link">
-      <span class="nav-icon">📦</span> Categories
-    </a>
-    <div class="mobile-nav-divider"></div>
-    ${
-      isAdmin
-        ? `
-      <a href="${baseUrl}../admin/dashboard.php" class="mobile-nav-link admin-link">
-        <span class="nav-icon">🛡️</span> Admin Panel
-      </a>
-      <div class="mobile-nav-divider"></div>
-    `
-        : ""
-    }
-    <a href="${baseUrl}logout.php" class="mobile-nav-link logout-link">
-      <span class="nav-icon">🚪</span> Logout
-    </a>
-  `
-    : `
-    <a href="${baseUrl}index.php"  class="mobile-nav-link">
-      <span class="nav-icon">🏠</span> Home
-    </a>
-    <a href="${baseUrl}login.php"  class="mobile-nav-link">
-      <span class="nav-icon">🔑</span> Login
-    </a>
-    <a href="${baseUrl}login.php#register" class="mobile-nav-link">
-      <span class="nav-icon">✍️</span> Register
-    </a>
-  `;
-
-  const userBlock = isLoggedIn
-    ? `
-    <div class="mobile-nav-user">
-      <div class="mobile-nav-avatar">${avatarHtml}</div>
-      <div class="mobile-nav-user-info">
-        <div class="mobile-nav-name">${userName}</div>
-        <div class="mobile-nav-role">${userRole}</div>
-      </div>
-    </div>
-  `
-    : "";
-
   const drawerHtml = `
     <!-- Overlay -->
     <div class="mobile-nav-overlay" id="mobileNavOverlay"></div>

@@ -1,6 +1,4 @@
-// admin/assets/js/admin-mobile.js
 // Handles the admin sidebar drawer on mobile
-// Include on ALL admin pages after jQuery
 
 $(function () {
   // Inject overlay if not present
@@ -14,21 +12,25 @@ $(function () {
     $(".sidebar").addClass("open");
     $("#adminSidebarOverlay").addClass("open");
     $("body").css("overflow", "hidden");
-    $(".admin-hamburger").addClass("open");
+    $("#adminMenuToggle").addClass("open");
   }
 
   function closeSidebar() {
     $(".sidebar").removeClass("open");
     $("#adminSidebarOverlay").removeClass("open");
     $("body").css("overflow", "");
-    $(".admin-hamburger").removeClass("open");
+    $("#adminMenuToggle").removeClass("open");
   }
 
-  $(document).on("click", ".admin-hamburger", function () {
+  // Toggle sidebar on hamburger click
+  $(document).on("click", "#adminMenuToggle", function () {
     $(".sidebar").hasClass("open") ? closeSidebar() : openSidebar();
   });
 
+  // Close sidebar when clicking overlay
   $(document).on("click", "#adminSidebarOverlay", closeSidebar);
+
+  // Close sidebar on Escape key
   $(document).on("keydown", function (e) {
     if (e.key === "Escape") closeSidebar();
   });
