@@ -66,6 +66,9 @@ $(function () {
         : `login.php`,
     );
 
+    // Populate buy form product ID
+    $("#buyProductId").val(p.id);
+
     // Reviews
     // renderReviews(p.reviews);
 
@@ -182,20 +185,6 @@ $(function () {
 
   //   list.html(html);
   // }
-
-  // ── Wishlist button ────────────────────────────────────────
-  $("#btnWishlist").on("click", function () {
-    if (!IS_LOGGED) {
-      window.location.href = BASE_URL + "login.php";
-      return;
-    }
-    const btn = $(this);
-    if (btn.hasClass("wishlisted")) {
-      btn.removeClass("wishlisted").text("🤍 Add to wishlist");
-    } else {
-      btn.addClass("wishlisted").text("❤️ Wishlisted");
-    }
-  });
 
   // ── Make Offer button ──────────────────────────────────────
   $("#btnOffer").on("click", function () {

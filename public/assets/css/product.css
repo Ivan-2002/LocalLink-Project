@@ -196,26 +196,30 @@
   gap: 10px;
   flex-wrap: wrap;
 }
-.btn-wishlist {
-  padding: 11px 20px;
-  background: #1a8a6f;
+.btn-buy-item {
+  padding: 12px 24px;
+  background: linear-gradient(135deg, #1a8a6f 0%, #0f6b52 100%);
   color: #fff;
   border: none;
   border-radius: 10px;
   font-family: "DM Sans", sans-serif;
-  font-size: 0.9rem;
-  font-weight: 600;
+  font-size: 1rem;
+  font-weight: 700;
   cursor: pointer;
   transition:
     background 0.18s,
-    transform 0.15s;
+    transform 0.15s,
+    box-shadow 0.18s;
+  box-shadow: 0 4px 12px rgba(26, 138, 111, 0.25);
 }
-.btn-wishlist:hover {
-  background: #147a61;
-  transform: translateY(-1px);
+.btn-buy-item:hover {
+  background: linear-gradient(135deg, #0f6b52 0%, #084a39 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(26, 138, 111, 0.35);
 }
-.btn-wishlist.wishlisted {
-  background: #e03131;
+.btn-buy-item:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(26, 138, 111, 0.25);
 }
 
 .btn-share,

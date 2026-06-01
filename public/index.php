@@ -47,6 +47,9 @@ $userName  = $_SESSION['name'] ?? 'Guest';
         <div class="nav-right">
             <!-- <a href="<?= BASE_URL ?>cart.php" class="nav-icon-btn" title="Cart">🛒</a> -->
             <a href="<?= BASE_URL ?>messages.php" class="nav-icon-btn" title="Messages">💬</a>
+            <?php if (isLoggedIn()): ?>
+                <a href="<?= BASE_URL ?>escrow/my-transactions.php" class="nav-icon-btn" title="My Escrow Transactions">📦</a>
+            <?php endif; ?>
             <div class="nav-icon-btn notif-wrap" id="bellWrap" style="position:relative; cursor:pointer;">
                 🔔
                 <span class="notif-badge d-none" id="notifBadge"

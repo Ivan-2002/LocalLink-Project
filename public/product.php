@@ -40,6 +40,9 @@ if (!$productId) redirect(BASE_URL . 'index.php');
         <div class="nav-right">
             <!-- <a href="<?= BASE_URL ?>cart.php" class="nav-icon-btn">🛒</a> -->
             <a href="<?= BASE_URL ?>messages.php" class="nav-icon-btn">💬</a>
+            <?php if (isLoggedIn()): ?>
+                <a href="<?= BASE_URL ?>escrow/my-transactions.php" class="nav-icon-btn" title="My Escrow Transactions">📦</a>
+            <?php endif; ?>
             <div class="nav-icon-btn notif-wrap" id="bellWrap" style="position:relative; cursor:pointer;">
                 🔔
                 <span class="notif-badge d-none" id="notifBadge"
@@ -139,9 +142,10 @@ if (!$productId) redirect(BASE_URL . 'index.php');
 
                 <!-- Action buttons -->
                 <div class="pd-actions">
-                    <button class="btn-wishlist" id="btnWishlist">
-                        🤍 Add to wishlist
-                    </button>
+                    <form method="POST" action="<?= BASE_URL ?>escrow/initiate.php" style="flex: 1;" id="buyForm">
+                        <input type="hidden" name="product_id" id="buyProductId" value="">
+                        <button type="submit" class="btn-make-offer" style="width: 100%;">Buy Item</button>
+                    </form>
                     <button class="btn-share" title="Share">⬆</button>
                     <button class="btn-more" title="More">•••</button>
                 </div>

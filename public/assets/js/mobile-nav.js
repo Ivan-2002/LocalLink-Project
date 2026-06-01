@@ -31,12 +31,6 @@ $(function () {
         <button class="mobile-nav-close" id="mobileNavClose">&times;</button>
       </div>
 
-      ${userBlock}
-
-      <div class="mobile-nav-links">
-        ${authLinks}
-      </div>
-
       <div class="mobile-nav-footer">
         © 2026 TownMarket
       </div>
