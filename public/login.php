@@ -115,7 +115,7 @@ if (isLoggedIn()) {
   </div>
 
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-  <script src="<?= BASE_URL ?>assets/js/mobile-nav.js"></script>
+
   <script src="<?= BASE_URL ?>assets/js/auth.js"></script>
 </body>
 

@@ -133,14 +133,8 @@ $openProductId = (int)($_GET['product'] ?? 0);
         const OPEN_PRODUCT = <?= $openProductId ?>;
     </script>
     <script>
-        // Mobile nav data (read by mobile-nav.js)
-        window.MOB_LOGGED = <?= isLoggedIn() ? 'true' : 'false' ?>;
-        window.MOB_NAME = '<?= sanitize($_SESSION["name"] ?? "Guest") ?>';
-        window.MOB_ROLE = '<?= sanitize($_SESSION["role"] ?? "") ?>';
-        window.MOB_ADMIN = <?= isAdmin() ? 'true' : 'false' ?>;
-        window.MOB_AVATAR = '<?= !empty($_SESSION["avatar"]) ? BASE_URL . "uploads/avatars/" . $_SESSION["avatar"] : "" ?>';
+
     </script>
-    <script src="<?= BASE_URL ?>assets/js/mobile-nav.js"></script>
     <script src="<?= BASE_URL ?>assets/js/messages.js"></script>
 </body>
 

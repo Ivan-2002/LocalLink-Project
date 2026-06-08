@@ -288,18 +288,12 @@ if (!$productId) redirect(BASE_URL . 'index.php');
     </script>
 
     <script>
-        // Mobile nav data (read by mobile-nav.js)
-        window.MOB_LOGGED = <?= isLoggedIn() ? 'true' : 'false' ?>;
-        window.MOB_NAME = '<?= sanitize($_SESSION["name"] ?? "Guest") ?>';
-        window.MOB_ROLE = '<?= sanitize($_SESSION["role"] ?? "") ?>';
-        window.MOB_ADMIN = <?= isAdmin() ? 'true' : 'false' ?>;
-        window.MOB_AVATAR = '<?= !empty($_SESSION["avatar"]) ? BASE_URL . "uploads/avatars/" . $_SESSION["avatar"] : "" ?>';
+
     </script>
 
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="<?= BASE_URL ?>assets/js/product.js"></script>
     <script src="<?= BASE_URL ?>assets/js/reviews.js"></script>
-    <script src="<?= BASE_URL ?>assets/js/mobile-nav.js"></script>
 
     <script>
         $(function() {
