@@ -296,12 +296,13 @@ requireLogin();
     <footer class="home-footer">
         <span>© 2026 TownMarket — Community Market | Cape Town</span>
         <div class="footer-links">
-            <a href="#">Help</a>
-            <a href="#">Contact</a>
-            <a href="#">About our Community</a>
+            <button class="help-trigger-btn" id="helpBtn" aria-label="Open help guide">
+                Help
+            </button>
         </div>
     </footer>
 
+    <?php include_once __DIR__ . '/../includes/help-model.php'; ?>
     <script>
 
     </script>
