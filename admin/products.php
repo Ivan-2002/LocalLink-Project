@@ -36,6 +36,7 @@ $cats = $pdo->query("SELECT id, name FROM categories WHERE parent_id IS NULL ORD
                 <a href="users.php">👤 Users</a>
                 <a href="products.php" class="active">📦 Products</a>
                 <a href="categories.php">🗂️ Categories</a>
+                <a href="escrow_panel.php">Escrow Disputes</a>
                 <a href="<?= BASE_URL ?>index.php">LocalLink</a>
             </nav>
             <div class="sidebar-footer">

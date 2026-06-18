@@ -1,4 +1,5 @@
 <?php
+
 /**
  * admin/escrow_panel.php
  * Admin panel for managing escrow transactions and disputes
@@ -98,11 +99,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
             ]);
 
             $db->commit();
-            
+
             // Redirect to refresh
             header('Location: ' . $_SERVER['PHP_SELF'] . '?status=disputed');
             exit;
-
         } catch (Exception $e) {
             if (isset($db)) {
                 $db->rollBack();
@@ -165,14 +165,14 @@ try {
     foreach ($open_disputes as $d) {
         $disputes_by_transaction[$d['transaction_id']] = $d;
     }
-
 } catch (Exception $e) {
     error_log('Escrow panel error: ' . $e->getMessage());
     die('An error occurred. Please try again.');
 }
 
 // Helper function for status badge color
-function getStatusBadgeClass($status) {
+function getStatusBadgeClass($status)
+{
     $badges = [
         'pending' => 'bg-secondary',
         'funded' => 'bg-info',
@@ -188,6 +188,7 @@ function getStatusBadgeClass($status) {
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -197,6 +198,10 @@ function getStatusBadgeClass($status) {
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>assets/css/style.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>assets/css/mobile.css">
+    <link rel="stylesheet" href="assets/css/admin.css">
+    <link rel="stylesheet" href="assets/css/users.css">
+    <link rel="stylesheet" href="assets/css/products.css">
+    <link rel="stylesheet" href="assets/css/admin-mobile.css">
     <style>
         .status-filter {
             display: flex;
@@ -204,120 +209,163 @@ function getStatusBadgeClass($status) {
             flex-wrap: wrap;
             margin-bottom: 1.5rem;
         }
+
         .status-filter .btn-sm {
             font-size: 0.85rem;
         }
+
         .transaction-row {
             border-bottom: 1px solid #e9ecef;
             padding: 1rem 0;
         }
+
         .transaction-row:last-child {
             border-bottom: none;
         }
+
         .dispute-actions {
             display: flex;
             gap: 0.5rem;
         }
+
         .dispute-actions form {
             display: inline;
         }
     </style>
 </head>
+
 <body class="home-page">
-    <header class="top-navbar">
-        <div class="nav-left">
-            <a href="<?= BASE_URL ?>../admin/dashboard.php" class="brand-logo">
-                <strong>LocalLink Admin</strong>
-            </a>
-        </div>
-    </header>
 
-    <main class="container-fluid py-5">
-        <div class="row">
-            <div class="col-12">
-                <h2 class="mb-4">Escrow Transactions</h2>
+    <div class="admin-wrapper">
+        <aside class="sidebar">
+            <div class="sidebar-brand">LocalLink <span>🛍️</span></div>
+            <nav>
+                <a href="dashboard.php">🏠 DashBoard</a>
+                <a href="users.php">👤 Users</a>
+                <a href="products.php">📦 Products</a>
+                <a href="categories.php">🗂️ Categories</a>
+                <a href="escrow_panel.php" class="active">Escrow Disputes</a>
+                <a href="<?= BASE_URL ?>index.php">LocalLink</a>
+            </nav>
+            <div class="sidebar-footer">
+                <a href="<?= BASE_URL ?>logout.php" class="logout-link">→ Log out</a>
+            </div>
+        </aside>
 
-                <?php if (isset($error_message)): ?>
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    <?= htmlspecialchars($error_message) ?>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                </div>
-                <?php endif; ?>
+        <main class="admin-main">
 
-                <!-- Status Filter -->
-                <div class="status-filter">
-                    <a href="?status=" class="btn btn-sm <?= !$status_filter ? 'btn-primary' : 'btn-outline-primary' ?>">
-                        All
-                    </a>
-                    <?php foreach ($allowed_statuses as $s): ?>
-                    <a href="?status=<?= $s ?>" class="btn btn-sm <?= $status_filter === $s ? 'btn-primary' : 'btn-outline-primary' ?>">
-                        <?= ucfirst($s) ?>
-                    </a>
-                    <?php endforeach; ?>
-                </div>
-
-                <!-- Transactions Table -->
-                <div class="card shadow-sm">
-                    <div class="table-responsive">
-                        <table class="table table-hover mb-0">
-                            <thead class="table-light">
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Product</th>
-                                    <th>Buyer</th>
-                                    <th>Seller</th>
-                                    <th>Amount</th>
-                                    <th>Status</th>
-                                    <th>Created</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php if (empty($transactions)): ?>
-                                <tr>
-                                    <td colspan="8" class="text-center py-4 text-muted">
-                                        No transactions found.
-                                    </td>
-                                </tr>
-                                <?php else: ?>
-                                    <?php foreach ($transactions as $trans): ?>
-                                    <tr>
-                                        <td><strong>#<?= $trans['id'] ?></strong></td>
-                                        <td><?= htmlspecialchars(substr($trans['product_title'], 0, 30)) ?></td>
-                                        <td><?= htmlspecialchars($trans['buyer_name']) ?></td>
-                                        <td><?= htmlspecialchars($trans['seller_name']) ?></td>
-                                        <td>R<?= number_format($trans['amount'], 2) ?></td>
-                                        <td>
-                                            <span class="badge <?= getStatusBadgeClass($trans['status']) ?>">
-                                                <?= ucfirst($trans['status']) ?>
-                                            </span>
-                                            <?php if ($trans['dispute_count'] > 0): ?>
-                                            <span class="badge bg-danger ms-2">
-                                                Disputed
-                                            </span>
-                                            <?php endif; ?>
-                                        </td>
-                                        <td><?= date('M d, Y', strtotime($trans['created_at'])) ?></td>
-                                        <td>
-                                            <?php if ($trans['status'] === 'disputed' && isset($disputes_by_transaction[$trans['id']])): ?>
-                                            <button type="button" class="btn btn-sm btn-warning" data-bs-toggle="modal" 
-                                                    data-bs-target="#disputeModal" 
-                                                    data-escrow-id="<?= $trans['id'] ?>"
-                                                    data-reason="<?= htmlspecialchars($disputes_by_transaction[$trans['id']]['reason']) ?>">
-                                                Resolve
-                                            </button>
-                                            <?php endif; ?>
-                                        </td>
-                                    </tr>
-                                    <?php endforeach; ?>
-                                <?php endif; ?>
-                            </tbody>
-                        </table>
+            <div class="admin-topbar">
+                <h1 class="admin-page-title">Escrow Transactions</h1>
+                <div class="topbar-right">
+                    <button class="admin-hamburger" id="adminMenuToggle">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </button>
+                    <button class="topbar-icon">🔍</button>
+                    <button class="topbar-icon">🔔</button>
+                    <div class="topbar-user">
+                        <div class="topbar-avatar"><?= strtoupper(substr($_SESSION['name'], 0, 1)) ?></div>
+                        <?= sanitize($_SESSION['name']) ?>
                     </div>
                 </div>
-
             </div>
-        </div>
+
+            <div class="admin-page-subtitle"></div>
+
+            <div class="admin-content">
+
+                <div id="pageAlert" class="alert d-none mb-3"></div>
+
+                <div class="admin-card">
+
+                    <div class="row">
+                        <div class="col-12">
+
+                            <?php if (isset($error_message)): ?>
+                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                    <?= htmlspecialchars($error_message) ?>
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                                </div>
+                            <?php endif; ?>
+
+                            <!-- Status Filter -->
+                            <div class="status-filter">
+                                <a href="?status=" class="btn btn-sm <?= !$status_filter ? 'btn-primary' : 'btn-outline-primary' ?>">
+                                    All
+                                </a>
+                                <?php foreach ($allowed_statuses as $s): ?>
+                                    <a href="?status=<?= $s ?>" class="btn btn-sm <?= $status_filter === $s ? 'btn-primary' : 'btn-outline-primary' ?>">
+                                        <?= ucfirst($s) ?>
+                                    </a>
+                                <?php endforeach; ?>
+                            </div>
+
+                            <!-- Transactions Table -->
+                            <div class="card shadow-sm">
+                                <div class="table-responsive">
+                                    <table class="table table-hover mb-0">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Product</th>
+                                                <th>Buyer</th>
+                                                <th>Seller</th>
+                                                <th>Amount</th>
+                                                <th>Status</th>
+                                                <th>Created</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <?php if (empty($transactions)): ?>
+                                                <tr>
+                                                    <td colspan="8" class="text-center py-4 text-muted">
+                                                        No transactions found.
+                                                    </td>
+                                                </tr>
+                                            <?php else: ?>
+                                                <?php foreach ($transactions as $trans): ?>
+                                                    <tr>
+                                                        <td><strong>#<?= $trans['id'] ?></strong></td>
+                                                        <td><?= htmlspecialchars(substr($trans['product_title'], 0, 30)) ?></td>
+                                                        <td><?= htmlspecialchars($trans['buyer_name']) ?></td>
+                                                        <td><?= htmlspecialchars($trans['seller_name']) ?></td>
+                                                        <td>R<?= number_format($trans['amount'], 2) ?></td>
+                                                        <td>
+                                                            <span class="badge <?= getStatusBadgeClass($trans['status']) ?>">
+                                                                <?= ucfirst($trans['status']) ?>
+                                                            </span>
+                                                            <?php if ($trans['dispute_count'] > 0): ?>
+                                                                <span class="badge bg-danger ms-2">
+                                                                    Disputed
+                                                                </span>
+                                                            <?php endif; ?>
+                                                        </td>
+                                                        <td><?= date('M d, Y', strtotime($trans['created_at'])) ?></td>
+                                                        <td>
+                                                            <?php if ($trans['status'] === 'disputed' && isset($disputes_by_transaction[$trans['id']])): ?>
+                                                                <button type="button" class="btn btn-sm btn-warning" data-bs-toggle="modal"
+                                                                    data-bs-target="#disputeModal"
+                                                                    data-escrow-id="<?= $trans['id'] ?>"
+                                                                    data-reason="<?= htmlspecialchars($disputes_by_transaction[$trans['id']]['reason']) ?>">
+                                                                    Resolve
+                                                                </button>
+                                                            <?php endif; ?>
+                                                        </td>
+                                                    </tr>
+                                                <?php endforeach; ?>
+                                            <?php endif; ?>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>
     </main>
 
     <!-- Dispute Resolution Modal -->
@@ -335,8 +383,8 @@ function getStatusBadgeClass($status) {
                         <div class="alert alert-info" id="reason_text"></div>
                         <div class="mb-3">
                             <label for="admin_note" class="form-label">Admin Note</label>
-                            <textarea class="form-control" id="admin_note" name="admin_note" rows="2" 
-                                      placeholder="Optional note for record..."></textarea>
+                            <textarea class="form-control" id="admin_note" name="admin_note" rows="2"
+                                placeholder="Optional note for record..."></textarea>
                         </div>
                         <div class="alert alert-warning">
                             <strong>Choose an action:</strong>
@@ -356,12 +404,7 @@ function getStatusBadgeClass($status) {
             </div>
         </div>
     </div>
-
-    <footer class="bg-light py-4 mt-5">
-        <div class="container text-center">
-            <p class="text-muted">© 2024 LocalLink. All rights reserved.</p>
-        </div>
-    </footer>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
@@ -377,4 +420,5 @@ function getStatusBadgeClass($status) {
         });
     </script>
 </body>
+
 </html>
