@@ -137,7 +137,7 @@ $cats = $pdo->query("SELECT id, name FROM categories WHERE parent_id IS NULL ORD
 
     <!-- ══════════════════════════════════════════════
      ROW ACTION DROPDOWN
-══════════════════════════════════════════════ -->
+    ══════════════════════════════════════════════ -->
     <div class="um-action-menu d-none" id="actionMenu">
         <a href="#" class="um-action-item" id="actionView" target="_blank">
             👁️ View Listing
@@ -153,7 +153,7 @@ $cats = $pdo->query("SELECT id, name FROM categories WHERE parent_id IS NULL ORD
 
     <!-- ══════════════════════════════════════════════
      PRODUCT DETAIL MODAL
-══════════════════════════════════════════════ -->
+    ══════════════════════════════════════════════ -->
     <div class="modal-overlay d-none" id="productModal">
         <div class="modal-box pm-product-modal">
             <div class="modal-header">
