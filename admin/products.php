@@ -199,8 +199,8 @@ $cats = $pdo->query("SELECT id, name FROM categories WHERE parent_id IS NULL ORD
                             👁️ View Live
                         </a>
                         <button class="pm-btn-approve d-none" id="modalApproveBtn">✅ Approve</button>
-                        <button class="pm-btn-remove  d-none" id="modalRemoveBtn">🚫 Remove</button>
-                        <button class="pm-btn-restore d-none" id="modalRestoreBtn">♻️ Restore</button>
+                        <!-- <button class="pm-btn-remove  d-none" id="modalRemoveBtn">🚫 Remove</button>
+                        <button class="pm-btn-restore d-none" id="modalRestoreBtn">♻️ Restore</button> -->
                         <button class="pm-btn-delete" id="modalDeleteBtn">🗑️ Delete</button>
                     </div>
                 </div>
@@ -252,7 +252,7 @@ $cats = $pdo->query("SELECT id, name FROM categories WHERE parent_id IS NULL ORD
                     `<div class="pm-row-img-placeholder">🛍️</div>`;
 
                 return `
-      <tr data-id="${p.id}">
+      <tr data-id="${p.product_actual_id}">
         <td><input type="checkbox" class="um-row-check"></td>
         <td>
           <div class="pm-product-cell">
@@ -266,7 +266,7 @@ $cats = $pdo->query("SELECT id, name FROM categories WHERE parent_id IS NULL ORD
         <td>${statusBadge}</td>
         <td class="um-email">${p.date_listed}</td>
         <td>
-          <button class="um-row-action-btn" data-id="${p.id}">•••</button>
+          <button class="um-row-action-btn" data-id="${p.product_actual_id}">•••</button>
         </td>
       </tr>`;
             }).join('');
@@ -280,7 +280,7 @@ $cats = $pdo->query("SELECT id, name FROM categories WHERE parent_id IS NULL ORD
         $(document).on('click', '.um-row-action-btn', function(e) {
             e.stopPropagation();
             const id = $(this).data('id');
-            const product = allProducts.find(p => p.id == id);
+            const product = allProducts.find(p => p.product_actual_id == id);
             if (!product) return;
 
             activeProductId = id;
@@ -289,8 +289,8 @@ $cats = $pdo->query("SELECT id, name FROM categories WHERE parent_id IS NULL ORD
             // Show/hide actions based on status
             const s = product.status;
             $('#actionApprove').toggleClass('d-none', s !== 'pending');
-            $('#actionRestore').toggleClass('d-none', s !== 'removed');
-            $('#actionRemove').toggleClass('d-none', s === 'removed');
+            // $('#actionRestore').toggleClass('d-none', s !== 'removed');
+            // $('#actionRemove').toggleClass('d-none', s === 'removed');
             $('#actionView').attr('href', BASE_URL + 'product.php?id=' + id);
 
             const btn = $(this);
@@ -343,7 +343,7 @@ $cats = $pdo->query("SELECT id, name FROM categories WHERE parent_id IS NULL ORD
         // PRODUCT DETAIL MODAL
         // ══════════════════════════════════════════════
         function openProductModal(id) {
-            const p = allProducts.find(x => x.id == id);
+            const p = allProducts.find(x => x.product_actual_id == id);
             if (!p) return;
             activeProductId = id;
             activeProduct = p;
@@ -369,7 +369,7 @@ $cats = $pdo->query("SELECT id, name FROM categories WHERE parent_id IS NULL ORD
             $('#modalStatus').html(statusMap[p.status] || p.status);
 
             // View link
-            $('#modalViewBtn').attr('href', BASE_URL + 'product.php?id=' + p.id);
+            $('#modalViewBtn').attr('href', BASE_URL + 'product.php?id=' + p.product_actual_id);
 
             // Action buttons based on status
             $('#modalApproveBtn').toggleClass('d-none', p.status !== 'pending');
@@ -379,19 +379,19 @@ $cats = $pdo->query("SELECT id, name FROM categories WHERE parent_id IS NULL ORD
             // Wire up buttons
             $('#modalApproveBtn').off('click').on('click', () => {
                 closeModal('productModal');
-                updateProduct(p.id, 'approve');
+                updateProduct(p.product_actual_id, 'approve');
             });
             $('#modalRemoveBtn').off('click').on('click', () => {
                 closeModal('productModal');
-                confirmThenUpdate(p.id, 'remove', `Remove "${p.title}"?`);
+                confirmThenUpdate(p.product_actual_id, 'remove', `Remove "${p.title}"?`);
             });
             $('#modalRestoreBtn').off('click').on('click', () => {
                 closeModal('productModal');
-                updateProduct(p.id, 'restore');
+                updateProduct(p.product_actual_id, 'restore');
             });
             $('#modalDeleteBtn').off('click').on('click', () => {
                 closeModal('productModal');
-                confirmThenUpdate(p.id, 'delete', `Permanently delete "${p.title}"? Cannot be undone.`);
+                confirmThenUpdate(p.product_actual_id, 'delete', `Permanently delete "${p.title}"? Cannot be undone.`);
             });
 
             openModal('productModal');
@@ -401,9 +401,17 @@ $cats = $pdo->query("SELECT id, name FROM categories WHERE parent_id IS NULL ORD
         // UPDATE PRODUCT
         // ══════════════════════════════════════════════
         function updateProduct(id, action) {
-            $.post(ADMIN_API + 'update-product.php', {
-                    product_id: id,
-                    action
+            // Force conversion to integer to ensure no "undefined" strings get sent
+            const productId = parseInt(id, 10);
+
+            if (!productId) {
+                showPageAlert('Invalid Product ID selected.', 'danger');
+                return;
+            }
+
+            $.post(ADMIN_API + 'update-products.php', {
+                    product_id: productId,
+                    action: action
                 })
                 .done(res => {
                     if (res.success) {
@@ -413,7 +421,10 @@ $cats = $pdo->query("SELECT id, name FROM categories WHERE parent_id IS NULL ORD
                         showPageAlert(res.error, 'danger');
                     }
                 })
-                .fail(xhr => showPageAlert(xhr.responseJSON?.error || 'Action failed.', 'danger'));
+                .fail(xhr => {
+                    const errorMsg = xhr.responseJSON?.error || 'Action failed.';
+                    showPageAlert(errorMsg, 'danger');
+                });
         }
 
         // ══════════════════════════════════════════════

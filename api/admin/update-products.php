@@ -10,6 +10,18 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     jsonResponse(['error' => 'Method not allowed.'], 405);
 }
 
+// If $_POST is empty, check if data was sent via a raw request body payload
+if (empty($_POST)) {
+    $rawInput = file_get_contents('php://input');
+    $decodedJson = json_decode($rawInput, true);
+    if ($decodedJson) {
+        $_POST = $decodedJson;
+    } else {
+        // If it's not JSON, try parsing it manually from form data
+        parse_str($rawInput, $_POST);
+    }
+}
+
 $productId = (int)($_POST['product_id'] ?? 0);
 $action    = $_POST['action'] ?? '';
 
@@ -27,17 +39,17 @@ switch ($action) {
         jsonResponse(['success' => true, 'message' => 'Product approved and now active.']);
         break;
 
-    case 'remove':
-        $pdo->prepare("UPDATE products SET status = 'removed' WHERE id = ?")
-            ->execute([$productId]);
-        jsonResponse(['success' => true, 'message' => 'Product removed from listings.']);
-        break;
+    // case 'remove':
+    //     $pdo->prepare("UPDATE products SET status = 'removed' WHERE id = ?")
+    //         ->execute([$productId]);
+    //     jsonResponse(['success' => true, 'message' => 'Product removed from listings.']);
+    //     break;
 
-    case 'restore':
-        $pdo->prepare("UPDATE products SET status = 'active' WHERE id = ?")
-            ->execute([$productId]);
-        jsonResponse(['success' => true, 'message' => 'Product restored to active.']);
-        break;
+    // case 'restore':
+    //     $pdo->prepare("UPDATE products SET status = 'active' WHERE id = ?")
+    //         ->execute([$productId]);
+    //     jsonResponse(['success' => true, 'message' => 'Product restored to active.']);
+    //     break;
 
     case 'delete':
         // Hard delete — removes from database permanently

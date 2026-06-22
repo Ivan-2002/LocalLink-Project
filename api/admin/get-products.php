@@ -11,7 +11,7 @@ $status   = $_GET['status']         ?? '';
 $category = (int)($_GET['category'] ?? 0);
 
 $sql    = "
-    SELECT p.id, p.title, p.price, p.status, p.image, p.created_at,
+    SELECT p.id   AS product_actual_id, p.title, p.price, p.status, p.image, p.created_at,
            u.id   AS seller_id,   u.name AS seller_name,
            c.id   AS category_id, c.name AS category_name
     FROM products p
