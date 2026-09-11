@@ -35,7 +35,7 @@ Secure account access paired with real-time location and category filtering for 
 
 | User Login Interface | Marketplace & Category Filtering |
 | :---: | :---: |
-| ![User Login](docs/images/login-view.png) | ![Marketplace Browse](docs/images/marketplace-view.png) |
+| ![User Login](assets/screenshots/login-view.png) | ![Marketplace Browse](assets/screenshots/marketplace-view.png) |
 | *Authentication UI supporting email & social logins* | *Live item listings with location & category filters* |
 
 ---
@@ -45,7 +45,7 @@ Interactive item showcase featuring seller ratings, direct buyer-seller interact
 
 | Item Details & Seller Profiles | Safe Meet-Up Item Creation Form | Simulated Payment Gateway |
 | :---: | :---: | :---: |
-| ![Product Details](docs/images/product-detail.png) | ![List New Item](docs/images/list-item.png) | ![Checkout Gateway](docs/images/checkout-summary.png) |
+| ![Product Details](assets/screenshots/product-detail.png) | ![List New Item](assets/screenshots/list-item.png) | ![Checkout Gateway](assets/screenshots/checkout-summary.png) |
 | *Product page with ratings & offer options* | *Listing builder with safe meet-up suggestions* | *Order breakdown with fee calculation* |
 
 ---
@@ -55,9 +55,8 @@ Dedicated administration suite providing governance over registered users, liste
 
 | User Account Management | Product Inventory Governance | Category Structure Setup |
 | :---: | :---: | :---: |
-| ![User Management](docs/images/admin-users.png) | ![Product Management](docs/images/admin-products.png) | ![Category Management](docs/images/admin-categories.png) |
+| ![User Management](assets/screenshots/admin-users.png) | ![Product Management](assets/screenshots/admin-products.png) | ![Category Management](assets/screenshots/admin-categories.png) |
 | *User roles, status actions & profile controls* | *Product moderation, approval & removal actions* | *Dynamic taxonomy & category tree management* |
-
 ---
 ## 🛠️ Tech Stack & Architecture
 
