@@ -28,6 +28,37 @@ Informal traders and micro-entrepreneurs often lack access to traditional e-comm
 
 ---
 
+## 📸 Application Walkthrough & User Flow
+
+### 1. User Authentication & Marketplace Discovery
+Secure account access paired with real-time location and category filtering for local item discovery.
+
+| User Login Interface | Marketplace & Category Filtering |
+| :---: | :---: |
+| ![User Login](docs/images/login-view.png) | ![Marketplace Browse](docs/images/marketplace-view.png) |
+| *Authentication UI supporting email & social logins* | *Live item listings with location & category filters* |
+
+---
+
+### 2. Product Detail, Negotiation & Checkout Process
+Interactive item showcase featuring seller ratings, direct buyer-seller interaction, and simulated transaction verification.
+
+| Item Details & Seller Profiles | Safe Meet-Up Item Creation Form | Simulated Payment Gateway |
+| :---: | :---: | :---: |
+| ![Product Details](docs/images/product-detail.png) | ![List New Item](docs/images/list-item.png) | ![Checkout Gateway](docs/images/checkout-summary.png) |
+| *Product page with ratings & offer options* | *Listing builder with safe meet-up suggestions* | *Order breakdown with fee calculation* |
+
+---
+
+### 3. Administrative Control & Platform Moderation
+Dedicated administration suite providing governance over registered users, listed inventory, and product categories.
+
+| User Account Management | Product Inventory Governance | Category Structure Setup |
+| :---: | :---: | :---: |
+| ![User Management](docs/images/admin-users.png) | ![Product Management](docs/images/admin-products.png) | ![Category Management](docs/images/admin-categories.png) |
+| *User roles, status actions & profile controls* | *Product moderation, approval & removal actions* | *Dynamic taxonomy & category tree management* |
+
+---
 ## 🛠️ Tech Stack & Architecture
 
 - **Backend:** PHP (RESTful API endpoints, Session Authentication, Request Handlers)
@@ -51,3 +82,48 @@ Informal traders and micro-entrepreneurs often lack access to traditional e-comm
    ```bash
    git clone [https://github.com/Ivan-2002/LocalLink-Project.git](https://github.com/Ivan-2002/LocalLink-Project.git)
    cd LocalLink-Project
+
+   2. **Database Configuration**
+   - Start your local MySQL server.
+   - Import the database schema file located in `/database` (or `locallink.sql`) into your MySQL management tool (e.g., phpMyAdmin or MySQL CLI):
+     mysql -u root -p locallink_db < path/to/locallink.sql
+
+3. **Configure Environment Variables / Connection Credentials**
+file with your local credentials:
+     define('DB_HOST', 'localhost');
+     define('DB_USER', 'your_mysql_user');
+     define('DB_PASS', 'your_mysql_password');
+     define('DB_NAME', 'locallink_db');
+
+4. **Launch the Application**
+   - Place the project folder into your server root directory (e.g., `htdocs` for XAMPP or `www` for WAMP).
+   - Navigate to `http://localhost/LocalLink-Project` in your browser.
+
+---
+
+## 📁 Repository Structure
+
+LocalLink-Project/
+├── api/             # AJAX backend handlers and data providers
+├── assets/          # CSS stylesheets, JS scripts, images, and fonts
+├── config/          # Database connections and global configurations
+├── controllers/     # Core application logic and request routers
+├── database/        # SQL schema dumps and initial migration files
+├── views/           # UI components, dashboard layouts, and pages
+└── index.php        # Application entry point
+
+---
+
+## 💡 Engineering Highlights & Takeaways
+
+- **Database Normalization:** Designed relational schemas for users, product categories, messages, and orders with strict foreign key constraints to ensure transactional integrity.
+- **Asynchronous UI Updates:** Implemented AJAX requests using native JavaScript `fetch()` calls to eliminate full page reloads during search and real-time interactions.
+- **Security Considerations:** Structured SQL queries using PDO/prepared statements to prevent SQL Injection and integrated session-based authentication checks across protected routes.
+
+---
+
+## 👤 Author
+
+**Ivan**
+- Software Engineering Student
+- GitHub: [@Ivan-2002](https://github.com/Ivan-2002)
